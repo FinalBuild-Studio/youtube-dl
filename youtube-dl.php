@@ -18,7 +18,9 @@
 
             if ($concat) {
                 $concat = false;
-                putenv($last . "=" . $value);
+                if (!preg_match("/^-/", $value)) {
+                    putenv($last . "=" . $value);
+                }
             }
 
             if (preg_match("/^-/", $value)) {
