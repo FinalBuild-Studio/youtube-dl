@@ -2,6 +2,7 @@
 
 namespace Youtube;
 
+
 class Loader extends Curl 
 {
 
@@ -14,19 +15,10 @@ class Loader extends Curl
     private $title     = "";
     private $mediaType = "";
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function __destruct()
-    {
-        parent::__destruct();
-    }
-
     public function visit($id = "")
     {
         $this->data = $this->request($this->baseUrl . $id);
+        $this->data = preg_replace("/(<head>)/", "$1<meta content='text/html; charset=utf-8' http-equiv='content-type'>", $this->data);
 
         return $this;
     }
@@ -121,8 +113,28 @@ class Loader extends Curl
             $video = $cache . "/" . uniqid(null, true);
             $this->saveTo($this->source["audio"], $audio);
             $this->saveTo($this->source["video"], $video);
-            $location = $location . "/" . $this->title . "." . $this->mediaType;
-            exec("\"{$path}\" -i {$video} -i {$audio} -c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 \"{$location}\"");
+            $audio     = realpath($audio);
+            $video     = realpath($video);
+            $tempfile  = uniqid(null, true) . "." . $this->mediaType;
+            $location  = realpath($location);
+            $finalPath = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $location . "/" . $this->title . "." . $this->mediaType);
+            $tempDest  = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $location . "/" . $tempfile);
+            $tempPath  = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $cache . ($os == "WIN" ? "\\" : "/") . $tempfile);
+            $command   = "\"{$path}\" -y -i {$video} -i {$audio} " .
+                        "-c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 " .
+                        "\"{$tempPath}\" && ". ($os == "WIN" ? "MOVE /Y" : "mv -f") .
+                        " \"{$tempPath}\" \"{$location}\"";
+            exec($command);
+
+            $wfio = ($os == "WIN" ? "wfio://" : "");
+
+            if (is_file($wfio . $finalPath)) {
+                @unlink($wfio . $finalPath);
+            }
+
+            @rename($wfio . $tempDest, $wfio . $finalPath);
+            @unlink($wfio . $audio);
+            @unlink($wfio . $video);
         }
 
         return false;
