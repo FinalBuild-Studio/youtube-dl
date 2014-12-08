@@ -2,9 +2,6 @@
 
 namespace Youtube;
 
-require_once 'Curl.php';
-require_once '../XML/xml2Array.php';
-
 class Loader extends Curl 
 {
 
@@ -126,9 +123,6 @@ class Loader extends Curl
             $this->saveTo($this->source["video"], $video);
             $location = $location . "/" . $this->title . "." . $this->mediaType;
             exec("\"{$path}\" -i {$video} -i {$audio} -c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 \"{$location}\"");
-
-            @unlink($video);
-            @unlink($audio);
         }
 
         return false;
