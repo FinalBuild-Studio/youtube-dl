@@ -9,7 +9,7 @@ A downloader for PHP to download best quality youtube video.
 3. Download [wfio](https://github.com/kenjiuno/php-wfio) system to support unicode if you use windows.
 
 ##Usage
-	php youtube-dl.php -i=qQ4fiXa6Y74 -p=D:/
+	php youtube-dl.php -i qQ4fiXa6Y74 -p D:/
 
 for more information 
 
