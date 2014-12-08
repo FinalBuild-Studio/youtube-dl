@@ -3,14 +3,14 @@
     require_once dirname(__FILE__) . "/library/autoload.php";
 
     if (count($argv) == 1) {
-        echo "missing operand\r\nTry 'youtube-dl.php -help' or 'youtube-dl.php -h' for more information.\r\n";
+        echo "youtube-dl.php: missing operand\r\nTry `php youtube-dl.php -help' or `php youtube-dl.php -h' for more information.\r\n";
         exit();
     }
 
     foreach ($argv as $key => $value) {
         if ($key >= 1) {
             if ($value == "-h" || $value == "-help") {
-                echo "\r\nyoutube-dl php version by michael34435@gmail.com\r\n\r\n-f, -format\tspecify youtube source format\r\n-p, -path\tsave file to this location\r\n-i, -id\t\tspecify youtube id\r\n\r\nplease report bugs to michael34435@gmail.com\r\n";
+                echo "Usage: php youtube-dl.php [OPTION]...\r\nyoutube-dl php version by michael34435\r\n\r\n-i, -id\t\tspecify youtube id\r\n-f, -format\tspecify youtube source format\r\n-p, -path\tsave file to this location\r\n\r\nplease report bugs to (michael34435@gmail.com)\r\n";
                 exit();
             }
             putenv($value . (preg_match("/=/", $value) ? "" : "="));
