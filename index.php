@@ -4,9 +4,13 @@
     set_time_limit(0);
     @$tempbat   = uniqid(null, true) . ".bat";
     @$cache     = dirname(__FILE__) . "/cache/";
-    @$parsedUrl = parse_url($_POST["url"]);
-    @parse_str($parsedUrl["query"], $parsedUrl);
-    @$id        = $parsedUrl["v"];
+    if (@preg_match("/^http\:/", $_POST["url"]){
+      @$parsedUrl = parse_url($_POST["url"]);
+      @parse_str($parsedUrl["query"], $parsedUrl);
+      @$id        = $parsedUrl["v"];
+    } else {
+      @$id        = $_POST["url"];
+    }
     @$command   = "php youtube-dl.php -i \"{$id}\" -f \"{$_POST["format"]}\" -p \"{$_POST["location"]}\" -s \"{$_POST["save"]}\" -proxy \"{$_POST["proxy"]}\" && exit";
     @$bat       = $cache . "/" . $tempbat;
     @file_put_contents($bat, $command);
@@ -45,7 +49,7 @@
       <form method="post">
         <div class="form-element">
           <label>下載網址</label>
-          <input type="textbox" name="url" placeholder="請輸入youtube網址" required>
+          <input type="textbox" name="url" placeholder="請輸入youtube網址或ID" required>
         </div>
         <div class="form-element">
           <label>儲存位置</label>
