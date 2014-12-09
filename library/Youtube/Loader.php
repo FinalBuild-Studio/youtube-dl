@@ -15,6 +15,11 @@ class Loader extends Curl
     private $title     = "";
     private $mediaType = "";
 
+    public function setProxy($proxy)
+    {
+        $this->proxy = $proxy;
+    }
+
     public function visit($id = "")
     {
         $this->data = $this->request($this->baseUrl . $id);

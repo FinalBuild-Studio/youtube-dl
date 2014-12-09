@@ -12,7 +12,7 @@
     foreach ($argv as $key => $value) {
         if ($key >= 1) {
             if ($value == "-h" || $value == "-help") {
-                echo "Usage: php youtube-dl.php [OPTION]...\r\nyoutube-dl php version by michael34435\r\n\r\n-i, -id\t\tspecify youtube id\r\n-f, -format\tspecify youtube source format\r\n-p, -path\tsave file to this location\r\n\r\nplease report bugs to (michael34435@gmail.com)\r\n";
+                echo "Usage: php youtube-dl.php [OPTION]...\r\nyoutube-dl php version by michael34435\r\n\r\n-i, -id\t\tspecify youtube id\r\n-f, -format\tspecify youtube source format\r\n-p, -path\tsave file to this location\r\n-proxy\t\tallow proxy\r\n\r\nplease report bugs to (michael34435@gmail.com).\r\n";
                 exit();
             }
 
@@ -33,6 +33,7 @@
     $format = getenv("-format");
     $path   = getenv("-path");
     $id     = getenv("-id");
+    $proxy  = getenv("-proxy");
     $id     = empty($id) ? getenv("-i") : $id;
     $path   = empty($path) ? getenv("-p") : $path;
     $format = empty($format) ? getenv("-f") : $format;
@@ -46,5 +47,12 @@
         exit("No save path specified.");
     }
 
+
+
     $loader = new Youtube\Loader();
-    $loader->visit($id)->getManifest()->getMedia($format)->save($path);
+    
+    if (!empty($proxy)) {
+        $loader->setProxy($proxy);   
+    }
+
+    @$loader->visit($id)->getManifest()->getMedia($format)->save($path);

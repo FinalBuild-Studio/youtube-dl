@@ -5,8 +5,9 @@ namespace Youtube;
 class Curl
 {
 
-    private $ch = null; 
-    
+    private   $ch    = null; 
+    protected $proxy = null;
+
     protected function request($url = "")
     {
         $this->init();
@@ -37,6 +38,10 @@ class Curl
         $this->setOption(CURLOPT_SSL_VERIFYPEER, false);
         $this->setOption(CURLOPT_SSL_VERIFYHOST, false);
         $this->setOption(CURLOPT_RETURNTRANSFER, true);
+
+        if (isset($this->proxy)) {
+            $this->setOption(CURLOPT_PROXY, $this->proxy);
+        }
     }
 
     private function release()
