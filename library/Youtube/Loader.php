@@ -138,7 +138,6 @@ class Loader extends Curl
                 $tempPath  = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $cache . "/" . $fakeFile);
                 $finalPath = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $location . "/" . $this->title . "." . ($save == "video" ? $this->mediaType : "mp3"));
                 $command   = "\"{$path}\" -y -i \"{$tempfile}\" \"{$tempPath}\" && " . ($os == "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
-                echo $command;
             } else {
                 exit("Please assign `audio' or `video'.");
             }
