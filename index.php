@@ -11,7 +11,7 @@
     } else {
       @$id        = $_POST["url"];
     }
-    @$command   = "php youtube-dl.php -i \"{$id}\" -f \"{$_POST["format"]}\" -p \"{$_POST["location"]}\" -s \"{$_POST["save"]}\" -proxy \"{$_POST["proxy"]}\" && exit";
+    @$command   = "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php && php youtube-dl.php -i \"{$id}\" -f \"{$_POST["format"]}\" -p \"{$_POST["location"]}\" -s \"{$_POST["save"]}\" -proxy \"{$_POST["proxy"]}\" && exit";
     @$bat       = $cache . "/" . $tempbat;
     @file_put_contents($bat, $command);
     @exec("START \"\" \"{$bat}\"");
