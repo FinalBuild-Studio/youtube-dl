@@ -12,7 +12,15 @@
     foreach ($argv as $key => $value) {
         if ($key >= 1) {
             if ($value == "-h" || $value == "-help") {
-                echo "Usage: php youtube-dl.php [OPTION]...\r\nyoutube-dl php version by michael34435\r\n\r\n-i, -id\t\tSpecify youtube id\r\n-f, -format\tSpecify youtube source format\r\n-p, -path\tSave file to this location\r\n-s, -save\tOnly save specified format, two values `audio' or `video'. \r\n\t\tSelect `Audio' will save as m3 file.\r\n-proxy\t\tAllow proxy\r\n\r\nPlease report bugs to (michael34435@gmail.com).\r\n";
+                echo "Usage: php youtube-dl.php [OPTION]...\r\n" .
+                     "youtube-dl php version by michael34435\r\n" .
+                     "\r\n-i, -id\t\tSpecify youtube id" .
+                     "\r\n-f, -format\tSpecify youtube source format" .
+                     "\r\n-p, -path\tSave file to this location" .
+                     "\r\n-s, -save\tOnly save specified format, two values `audio' or `video'. \r\n" .
+                     "\t\tSelect `Audio' will save as mp3 file." .
+                     "\r\n-proxy\t\tAllow proxy\r\n" .
+                     "\r\nPlease report bugs to (michael34435@gmail.com).\r\n";
                 exit();
             }
 
