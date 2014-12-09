@@ -55,4 +55,18 @@
         $loader->setProxy($proxy);   
     }
 
-    @$loader->visit($id)->getManifest()->getMedia($format)->save($path);
+    $loader = $loader->visit($id);
+
+    echo "Analyzing available media manifest ...", PHP_EOL;
+    if (!($loader = @$loader->getManifest())) {
+        exit("Download failed, please add proxy setting or retry again.\r\n");
+    }
+
+
+    echo "Analyzing best media type ...", PHP_EOL;
+    if (!($loader = $loader->getMedia($format))) {
+        exit("Can not find property media format. Please try `mp4' or `webm' instead.\r\n");
+    }
+
+    echo "Try downloading with curl ...", PHP_EOL;
+    $loader->save($path);
