@@ -7,7 +7,7 @@
     @$parsedUrl = parse_url($_POST["url"]);
     @parse_str($parsedUrl["query"], $parsedUrl);
     @$id        = $parsedUrl["v"];
-    @$command   = "php youtube-dl.php -i \"{$id}\" -f \"{$_POST["format"]}\" -p \"{$_POST["location"]}\" -s \"{$_POST["save"]}\" && exit";
+    @$command   = "php youtube-dl.php -i \"{$id}\" -f \"{$_POST["format"]}\" -p \"{$_POST["location"]}\" -s \"{$_POST["save"]}\" -proxy \"{$_POST["proxy"]}\" && exit";
     @$bat       = $cache . "/" . $tempbat;
     @file_put_contents($bat, $command);
     @exec("START \"\" \"{$bat}\"");
@@ -50,6 +50,10 @@
         <div class="form-element">
           <label>儲存位置</label>
           <input type="textbox" name="location" placeholder="請輸入儲存位置" value="D:/" required>
+        </div>
+        <div class="form-element">
+          <label>代理設置</label>
+          <input type="textbox" name="proxy" placeholder="請輸入代理伺服器, e.g. proxy.hinet.net:80">
         </div>
         <div class="form-element">
           <label>提取方式</label>
