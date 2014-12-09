@@ -5,14 +5,16 @@ namespace Youtube;
 class Loader extends Curl 
 {
 
-    private $data      = "";
-    private $set       = array();
-    private $audio     = "";
-    private $video     = "";
-    private $source    = array();
-    private $baseUrl   = "https://www.youtube.com/watch?v=";
-    private $title     = "";
-    private $mediaType = "";
+    private $data       = "";
+    private $set        = array();
+    private $audio      = "";
+    private $video      = "";
+    private $source     = array();
+    private $baseUrl    = "https://www.youtube.com/watch?v=";
+    private $title      = "";
+    private $mediaType  = "";
+    private $exceptType = array("webm" => "mkv");
+    private $audioType  = array("mkv" => "vorbis", "mp4" => "aac");
 
     public function setProxy($proxy)
     {
@@ -60,7 +62,7 @@ class Loader extends Curl
     {
         $max = array();
         if (!empty($this->set)) {
-            $this->mediaType = $mediaType;
+            $this->mediaType = $this->getMediaType($mediaType);
             foreach ($this->set as $setKey => $setValue) {
                 if ($setValue["name"] == "ADAPTATIONSET") {
                     $type = "";
@@ -127,7 +129,8 @@ class Loader extends Curl
                 // -c:v copy -c:a aac -strict experimental \
                 // -map 0:v:0 -map 1:a:0 output.mp4
                 $command   = "\"{$path}\" -y -i \"{$video}\" -i \"{$audio}\" " .
-                            "-c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 " .
+                            "-c:v copy -c:a " . $this->getAudioType($this->mediaType) . 
+                            " -strict experimental -map 0:v:0 -map 1:a:0 " .
                             "\"{$tempPath}\" && ". ($os == "WIN" ? "MOVE /Y" : "mv -f") .
                             " \"{$tempPath}\" \"{$location}\"";
             } elseif (isset($this->source[$save])) {
@@ -156,5 +159,23 @@ class Loader extends Curl
         }
 
         return false;
+    }
+
+    private function getMediaType($type)
+    {
+        if (isset($this->exceptType[$type])) {
+            return $this->exceptType[$type];
+        }
+
+        return $type;
+    }
+
+    private function getAudioType($type)
+    {
+        if (isset($this->audioType[$type])) {
+            return $this->audioType[$type];
+        }
+
+        return $type;
     }
 }

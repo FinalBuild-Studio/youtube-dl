@@ -63,7 +63,7 @@
           <label>提取方式</label>
           <select name="save">
             <option value="">預設</option>
-            <option value="audio" <?php echo @$_POST["save"] == "audio" ? "selected" : ""; ?>>音軌(mp3)</option>
+            <option value="audio" <?php echo @$_POST["save"] == "audio" ? "selected" : ""; ?>>音訊軌(mp3)</option>
             <option value="video" <?php echo @$_POST["save"] == "video" ? "selected" : ""; ?>>視訊軌</option>
           </select>
         </div>
@@ -72,7 +72,7 @@
           <select name="format">
             <option value="">預設</option>
             <option value="mp4" <?php echo @$_POST["format"] == "mp4" ? "selected" : ""; ?>>mp4(推薦)</option>
-            <option value="webm" <?php echo @$_POST["format"] == "webm" ? "selected" : ""; ?>>webm</option>
+            <option value="webm" <?php echo @$_POST["format"] == "webm" ? "selected" : ""; ?>>webm(mkv)</option>
           </select>
         </div>
         <input type="submit">
