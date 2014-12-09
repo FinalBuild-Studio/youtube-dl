@@ -50,11 +50,11 @@
     $format = empty($format) ? "mp4" : $format;
 
     if (empty($id)) {
-        exit("No yt id specified.");
+        exit("No yt id specified.\r\n");
     }
 
     if (empty($path)) {
-        exit("No save path specified.");
+        exit("No save path specified.\r\n");
     }
 
 
@@ -75,7 +75,7 @@
 
     echo "Analyzing best media type ...", PHP_EOL;
     if (!($loader = $loader->getMedia($format))) {
-        exit("Can not find property media format. Please try `mp4' or `webm' instead.\r\n");
+        exit("Can not find proper media format. Please try `mp4' or `webm' instead.\r\n");
     }
 
     echo "Try downloading with curl ...", PHP_EOL;

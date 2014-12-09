@@ -119,9 +119,9 @@ class Loader extends Curl
                 $audio     = realpath($audio);
                 $video     = realpath($video);
                 $tempfile  = uniqid(null, true) . "." . $this->mediaType;
-                $finalPath = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $location . "/" . $this->title . "." . $this->mediaType);
-                $tempDest  = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $location . "/" . $tempfile);
-                $tempPath  = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $cache . "/" . $tempfile);
+                $finalPath = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . $this->mediaType);
+                $tempDest  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $tempfile);
+                $tempPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $cache . "/" . $tempfile);
                 
                 // ffmpeg -i video.mp4 -i audio.wav \
                 // -c:v copy -c:a aac -strict experimental \
@@ -134,12 +134,12 @@ class Loader extends Curl
                 $tempfile  = $cache . "/" . uniqid(null, true);
                 $this->saveTo($this->source[$save], $tempfile);
                 $fakeFile  = uniqid(null, true) . "." . ($save == "video" ? $this->mediaType : "mp3");
-                $tempDest  = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $location . "/" . $fakeFile);
-                $tempPath  = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $cache . "/" . $fakeFile);
-                $finalPath = preg_replace("/(\\\|\/)+/", ($os == "WIN" ? "\\" : "/"), $location . "/" . $this->title . "." . ($save == "video" ? $this->mediaType : "mp3"));
+                $tempDest  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $fakeFile);
+                $tempPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $cache . "/" . $fakeFile);
+                $finalPath = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . ($save == "video" ? $this->mediaType : "mp3"));
                 $command   = "\"{$path}\" -y -i \"{$tempfile}\" \"{$tempPath}\" && " . ($os == "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
             } else {
-                exit("Please assign `audio' or `video'.");
+                exit("Please assign `audio' or `video'.\r\n");
             }
 
             exec($command);
