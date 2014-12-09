@@ -4,7 +4,7 @@
     set_time_limit(0);
     @$tempbat   = uniqid(null, true) . ".bat";
     @$cache     = dirname(__FILE__) . "/cache/";
-    if (@preg_match("/^http\:/", $_POST["url"]){
+    if (@preg_match("/^http\:/", $_POST["url"])) {
       @$parsedUrl = parse_url($_POST["url"]);
       @parse_str($parsedUrl["query"], $parsedUrl);
       @$id        = $parsedUrl["v"];
