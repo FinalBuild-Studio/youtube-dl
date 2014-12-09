@@ -12,7 +12,7 @@
     foreach ($argv as $key => $value) {
         if ($key >= 1) {
             if ($value == "-h" || $value == "-help") {
-                echo "Usage: php youtube-dl.php [OPTION]...\r\nyoutube-dl php version by michael34435\r\n\r\n-i, -id\t\tspecify youtube id\r\n-f, -format\tspecify youtube source format\r\n-p, -path\tsave file to this location\r\n-proxy\t\tallow proxy\r\n\r\nPlease report bugs to (michael34435@gmail.com).\r\n";
+                echo "Usage: php youtube-dl.php [OPTION]...\r\nyoutube-dl php version by michael34435\r\n\r\n-i, -id\t\tSpecify youtube id\r\n-f, -format\tSpecify youtube source format\r\n-p, -path\tSave file to this location\r\n-s, -save\tOnly save specified format, two values `audio' or `video'. \r\n\t\tSelect `Audio' will save as m3 file.\r\n-proxy\t\tAllow proxy\r\n\r\nPlease report bugs to (michael34435@gmail.com).\r\n";
                 exit();
             }
 
@@ -34,9 +34,11 @@
     $path   = getenv("-path");
     $id     = getenv("-id");
     $proxy  = getenv("-proxy");
+    $save   = getenv("-save");
     $id     = empty($id) ? getenv("-i") : $id;
     $path   = empty($path) ? getenv("-p") : $path;
     $format = empty($format) ? getenv("-f") : $format;
+    $save   = empty($save) ? getenv("-s") : $save;
     $format = empty($format) ? "mp4" : $format;
 
     if (empty($id)) {
@@ -69,4 +71,4 @@
     }
 
     echo "Try downloading with curl ...", PHP_EOL;
-    $loader->save($path);
+    $loader->save($path, $save);
