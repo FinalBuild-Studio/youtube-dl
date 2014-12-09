@@ -72,7 +72,7 @@ class Loader extends Curl
                         }
                     }
 
-                    if (preg_match("/" . quotemeta($mediaType) . "/", $type)) {
+                    if (preg_match("/\/" . quotemeta($mediaType) . "$/", $type)) {
                         $media       = explode("/", $type);
                         $media       = reset($media);
                         $max[$media] = isset($max[$media]) ? $max[$media] : 0;
