@@ -49,30 +49,30 @@
       <form method="post">
         <div class="form-element">
           <label>下載網址</label>
-          <input type="textbox" name="url" placeholder="請輸入youtube網址或ID" required>
+          <input type="textbox" name="url" placeholder="請輸入youtube網址或ID" required value="<?php echo @$_POST["url"]; ?>">
         </div>
         <div class="form-element">
           <label>儲存位置</label>
-          <input type="textbox" name="location" placeholder="請輸入儲存位置" value="D:/" required>
+          <input type="textbox" name="location" placeholder="請輸入儲存位置" value="D:/" required value="<?php echo @$_POST["location"]; ?>">
         </div>
         <div class="form-element">
           <label>代理設置</label>
-          <input type="textbox" name="proxy" placeholder="請輸入代理伺服器, e.g. proxy.hinet.net:80">
+          <input type="textbox" name="proxy" placeholder="請輸入代理伺服器, e.g. proxy.hinet.net:80" value="<?php echo @$_POST["proxy"]; ?>">
         </div>
         <div class="form-element">
           <label>提取方式</label>
           <select name="save">
             <option value="">預設</option>
-            <option value="audio">音軌(mp3)</option>
-            <option value="video">視訊軌</option>
+            <option value="audio" <?php echo @$_POST["save"] == "audio" ? "selected" : ""; ?>>音軌(mp3)</option>
+            <option value="video" <?php echo @$_POST["save"] == "video" ? "selected" : ""; ?>>視訊軌</option>
           </select>
         </div>
         <div class="form-element">
           <label>視訊格式</label>
           <select name="format">
             <option value="">預設</option>
-            <option value="mp4">mp4(推薦)</option>
-            <option value="webm">webm</option>
+            <option value="mp4" <?php echo @$_POST["format"] == "mp4" ? "selected" : ""; ?>>mp4(推薦)</option>
+            <option value="webm" <?php echo @$_POST["format"] == "webm" ? "selected" : ""; ?>>webm</option>
           </select>
         </div>
         <input type="submit">
