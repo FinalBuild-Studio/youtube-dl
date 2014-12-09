@@ -26,7 +26,7 @@ or
 I wrote a simple web console for windows users, just click **start.bat** then system will start php server on port 55555 and open Google Chrome.
 
 ###Packed bundles
-[PHP 5.5.15](http://goo.gl/JWVzm4), extract it to C:\, it include wfio system.   
+[PHP 5.6.3](http://goo.gl/JWVzm4), extract it to C:\, it include wfio system.   
 
 [ffmpeg](http://goo.gl/OFhRje), extract it to the folder youtube-dl installed in ffmpeg/  
 
