@@ -9,7 +9,9 @@ A downloader for PHP to download best quality youtube video.
 3. Download [wfio](https://github.com/kenjiuno/php-wfio) system to support unicode if you use windows.
 
 ##Usage
-	php youtube-dl.php -i qQ4fiXa6Y74 -p D:/
+for basic
+
+	php youtube-dl.php -i {YOUTUBE_ID} -p {SAVE_LOCATION}
 
 for more information 
 
@@ -18,6 +20,9 @@ for more information
 or
 
 	php youtube-dl.php -help
+
+##Web console
+I wrote a simple web console for windows users, just click **start.bat** then system will start php server on port 55555 and open Google Chrome.
 
 ##Copyright / License
 
