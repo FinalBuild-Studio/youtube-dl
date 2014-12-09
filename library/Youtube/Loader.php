@@ -14,7 +14,6 @@ class Loader extends Curl
     private $title      = "";
     private $mediaType  = "";
     private $exceptType = array("webm" => "mkv");
-    private $audioType  = array("mkv" => "vorbis", "mp4" => "aac");
 
     public function setProxy($proxy)
     {
@@ -129,8 +128,7 @@ class Loader extends Curl
                 // -c:v copy -c:a aac -strict experimental \
                 // -map 0:v:0 -map 1:a:0 output.mp4
                 $command   = "\"{$path}\" -y -i \"{$video}\" -i \"{$audio}\" " .
-                            "-c:v copy -c:a " . $this->getAudioType($this->mediaType) . 
-                            " -strict experimental -map 0:v:0 -map 1:a:0 " .
+                            "-c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 " .
                             "\"{$tempPath}\" && ". ($os == "WIN" ? "MOVE /Y" : "mv -f") .
                             " \"{$tempPath}\" \"{$location}\"";
             } elseif (isset($this->source[$save])) {
@@ -165,15 +163,6 @@ class Loader extends Curl
     {
         if (isset($this->exceptType[$type])) {
             return $this->exceptType[$type];
-        }
-
-        return $type;
-    }
-
-    private function getAudioType($type)
-    {
-        if (isset($this->audioType[$type])) {
-            return $this->audioType[$type];
         }
 
         return $type;
