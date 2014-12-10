@@ -58,10 +58,11 @@ class Loader extends Curl
                                 }
                             }
                         }
-                        $manifest    = $this->request($manifestUrl);
-                        $parser      = new \XML\xml2Array();
-                        $output      = $parser->parse($manifest);
-                        $this->set   = $output[0]["children"][0]["children"];
+
+                        $manifest  = $this->request($manifestUrl);
+                        $parser    = new \XML\xml2Array();
+                        $output    = $parser->parse($manifest);
+                        $this->set = $output[0]["children"][0]["children"];
 
                         return $this;
                     }
@@ -122,8 +123,9 @@ class Loader extends Curl
             $path      = dirname(__FILE__) . "/../../ffmpeg";
             $path      = realpath($path);
             $os        = substr(PHP_OS, 0, 3);
-            $path      = $path . "/{$os}/bin/ffmpeg" . ($os == "WIN" ? ".exe" : "");
+            $path      = "{$path}/{$os}/bin";
             $path      = realpath($path);
+            $path      = "set path=%path%;{$path};";
             $cache     = dirname(__FILE__) . "/../../cache";
             $cache     = realpath($cache);
             $location  = realpath($location);
@@ -142,7 +144,7 @@ class Loader extends Curl
                 // ffmpeg -i video.mp4 -i audio.wav \
                 // -c:v copy -c:a aac -strict experimental \
                 // -map 0:v:0 -map 1:a:0 output.mp4
-                $command   = "\"{$path}\" -y -i \"{$video}\" -i \"{$audio}\" " .
+                $command   = "{$path} && ffmpeg -y -i \"{$video}\" -i \"{$audio}\" " .
                             "-c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 " .
                             "\"{$tempPath}\" && ". ($os == "WIN" ? "MOVE /Y" : "mv -f") .
                             " \"{$tempPath}\" \"{$location}\"";
@@ -153,12 +155,13 @@ class Loader extends Curl
                 $tempDest  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $fakeFile);
                 $tempPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $cache . "/" . $fakeFile);
                 $finalPath = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . ($save == "video" ? $this->mediaType : "mp3"));
-                $command   = "\"{$path}\" -y -i \"{$tempfile}\" \"{$tempPath}\" && " . ($os == "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
+                $command   = "{$path} && ffmpeg -y -i \"{$tempfile}\" \"{$tempPath}\" && " . ($os == "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
             } else {
                 exit("Please assign `audio' or `video'.\r\n");
             }
 
             exec($command);
+
             $wfio = ($os == "WIN" ? "wfio://" : "");
 
             if (is_file($wfio . $finalPath)) {
