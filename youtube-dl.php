@@ -20,7 +20,7 @@
                      "\r\n-f, -format\tSpecify youtube source format" .
                      "\r\n-p, -path\tSave file to this location" .
                      "\r\n-s, -save\tOnly save specified format, two values `audio' or `video'. \r\n" .
-                     "\t\tSelect `Audio' will save as mp3 file." .
+                     "\t\tSelect `audio' will save as mp3 file." .
                      "\r\n-proxy\t\tAllow proxy\r\n" .
                      "\r\nPlease report bugs to (michael34435@gmail.com).\r\n";
                 exit();

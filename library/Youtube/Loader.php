@@ -125,7 +125,7 @@ class Loader extends Curl
             $os        = substr(PHP_OS, 0, 3);
             $path      = "{$path}/{$os}/bin";
             $path      = realpath($path);
-            $path      = "set path=%path%;{$path};";
+            $path      = $os == "WIN" ? "set path=%path%;{$path};" : "export PATH=\$PATH:{$path}";
             $cache     = dirname(__FILE__) . "/../../cache";
             $cache     = realpath($cache);
             $location  = realpath($location);
