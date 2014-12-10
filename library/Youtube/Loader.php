@@ -43,7 +43,7 @@ class Loader extends Curl
                     preg_match("/\"dashmpd\"\s*\:\s*\"([\"\w\\\\\/\-\.\:\%]*)\"\s*(,\s*\"\w+\"|\s*\}\s*)/", $config, $match);
                     if (isset($match[1])) {
                         $manifestUrl = preg_replace("/\\\/", "", $match[1]);
-                        if (preg_match("/\/s\/([a-zA-Z0-9\.]*)\//", $manifestUrl, $signature)) {
+                        if (preg_match("/\/s\/([a-zA-Z0-9\.]*)(\/|)/", $manifestUrl, $signature)) {
                             foreach ($scripts as $scriptTemp) {
                                 preg_match("/\"js\"\s*\:\s*\"([a-zA-Z_0-9\.\/\\\-]*)\"\s*(,\s*\"\w+\"|\s*\}\s*)/", $config, $src);
                                 if (isset($src[1])) {
