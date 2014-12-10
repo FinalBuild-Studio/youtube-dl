@@ -57,8 +57,6 @@
         exit("No save path specified.\r\n");
     }
 
-
-
     $loader = new Youtube\Loader();
     
     if (!empty($proxy)) {

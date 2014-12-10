@@ -32,8 +32,7 @@ I wrote a simple web console for windows users, just click **start.bat** then sy
 
 
 ##Issue / Todo
-1. Sign function to download manifest
-2. Save path do not support unicode now. Please try English path instead.
+1. Save path do not support unicode now. Please try English path instead.
 
 ##Copyright / License
 
