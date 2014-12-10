@@ -31,6 +31,10 @@ I wrote a simple web console for windows users, just click **start.bat** then sy
 [ffmpeg](http://goo.gl/OFhRje), extract it to the folder youtube-dl installed in ffmpeg/  
 
 
+##Issue / Todo
+1. Sign function to download manifest
+2. Save path do not support unicode now. Please try English path instead.
+
 ##Copyright / License
 
 Copyright 2014 CapsLock, Studio.
