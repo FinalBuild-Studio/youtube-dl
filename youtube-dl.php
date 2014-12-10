@@ -2,6 +2,8 @@
 
     require_once dirname(__FILE__) . "/library/autoload.php";
 
+    $accept = array("-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy");
+
     if (count($argv) == 1) {
         echo "youtube-dl.php: missing operand\r\nTry `php youtube-dl.php -help' or `php youtube-dl.php -h' for more information.\r\n";
         exit();
@@ -26,12 +28,12 @@
 
             if ($concat) {
                 $concat = false;
-                if (!preg_match("/^-/", $value)) {
+                if (!in_array($value, $accept)) {
                     putenv($last . "=" . $value);
                 }
             }
 
-            if (preg_match("/^-/", $value)) {
+            if (in_array($value, $accept)) {
                 $concat = true;
                 $last   = $value;
             }
