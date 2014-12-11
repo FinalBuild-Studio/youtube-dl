@@ -30,6 +30,8 @@ I wrote a simple web console for windows users, just click **start.bat** then sy
 
 [ffmpeg](http://goo.gl/OFhRje), extract it to the folder youtube-dl installed in ffmpeg/  
 
+###Binary
+[youtube-dl](http://goo.gl/CEYyLq) stable veriosn 0.1.1 download link is here.(include php and ffmpeg)  
 
 ##Issue / Todo
 1. Save path do not support unicode now. Please try English path instead.
