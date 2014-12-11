@@ -15,7 +15,7 @@
       } else {
         @$id = $url;
       }
-      @$prefex  = $os == "WIN" ? "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php;%cd%\php; && " : "";
+      @$prefex  = $os == "WIN" ? "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php;%cd%\\php; && " : "";
       @$command = "{$prefex}php youtube-dl.php -i \"{$id}\" -f \"{$_POST["format"]}\" -p \"{$_POST["location"]}\" -s \"{$_POST["save"]}\" -proxy \"{$_POST["proxy"]}\" && exit";
       @$bat     = $cache . "/" . $tempbat;
       @file_put_contents($bat, $command);
