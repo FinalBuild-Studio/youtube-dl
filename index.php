@@ -2,23 +2,28 @@
   $method = $_SERVER['REQUEST_METHOD'];
   if ($method == "POST") {
     set_time_limit(0);
-    @$tempbat   = uniqid(null, true) . ".bat";
-    @$cache     = dirname(__FILE__) . "/cache/";
-    if (@preg_match("/^http(s|)\:/", $_POST["url"])) {
-      @$parsedUrl = parse_url($_POST["url"]);
-      @parse_str($parsedUrl["query"], $parsedUrl);
-      @$id        = $parsedUrl["v"];
-    } else {
-      @$id        = $_POST["url"];
+    @$os      = substr(PHP_OS, 0, 3);
+    @$tempbat = uniqid(null, true) . ($os == "WIN" ? ".bat" : ".sh");
+    @$cache   = dirname(__FILE__) . "/cache/";
+    @$urls    = explode(",", $_POST["url"]);
+
+    foreach ($urls as $url) {
+      if (@preg_match("/^http(s|)\:/", $url)) {
+        @$parsedUrl = parse_url($url);
+        @parse_str($parsedUrl["query"], $parsedUrl);
+        @$id = $parsedUrl["v"];
+      } else {
+        @$id = $url;
+      }
+      @$prefex  = $os == "WIN" ? "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php && " : "";
+      @$command = "{$prefex}php youtube-dl.php -i \"{$id}\" -f \"{$_POST["format"]}\" -p \"{$_POST["location"]}\" -s \"{$_POST["save"]}\" -proxy \"{$_POST["proxy"]}\" && exit";
+      @$bat     = $cache . "/" . $tempbat;
+      @file_put_contents($bat, $command);
+      @exec(($os == "WIN" ? "START" : "sh") . " \"\" \"{$bat}\"");
+      @unlink($bat);
     }
-    @$command   = "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php && php youtube-dl.php -i \"{$id}\" -f \"{$_POST["format"]}\" -p \"{$_POST["location"]}\" -s \"{$_POST["save"]}\" -proxy \"{$_POST["proxy"]}\" && exit";
-    @$bat       = $cache . "/" . $tempbat;
-    @file_put_contents($bat, $command);
-    @exec("START \"\" \"{$bat}\"");
-    @unlink($bat);
   }
 ?>
-
 <!DOCTYPE html>
 <html>
   <head>
