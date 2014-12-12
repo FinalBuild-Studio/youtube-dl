@@ -23,7 +23,7 @@ or
 
 ##For Windows user
 ###Web console
-I wrote a simple web console for windows users, just click **start.bat** then system will start php server on port 55555 and open Google Chrome.
+I wrote a simple web console for windows users, just click **start-youtube-dl.bat** then system will start php server on port 55555 and open Google Chrome.
 
 ###Packed bundles
 [PHP 5.6.3](http://goo.gl/JWVzm4), extract it to C:\, it include wfio system.   
