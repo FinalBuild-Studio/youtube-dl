@@ -14,6 +14,7 @@ class Loader extends Curl
     private $title      = "";
     private $mediaType  = "";
     private $exceptType = array("webm" => "mkv");
+    private $skipFormat = array("mp4");
 
     public function setProxy($proxy)
     {
@@ -129,17 +130,14 @@ class Loader extends Curl
             $cache     = dirname(__FILE__) . "/../../cache";
             $cache     = realpath($cache);
             $location  = realpath($location);
-            if (empty($save)) {
+            $wfio      = ($os == "WIN" ? "wfio://" : "");
+
+            if (empty($save) && isset($this->source["audio"]) && isset($this->source["video"])) {
                 $audio = $cache . "/" . uniqid(null, true);
                 $video = $cache . "/" . uniqid(null, true);
                 
-                if (isset($this->source["audio"])) {
-                    $this->saveTo($this->source["audio"], $audio);
-                }
-
-                if (isset($this->source["video"])) {
-                    $this->saveTo($this->source["video"], $video);
-                }
+                $this->saveTo($this->source["audio"], $audio);
+                $this->saveTo($this->source["video"], $video);
                 
                 $audio     = realpath($audio);
                 $video     = realpath($video);
@@ -155,25 +153,25 @@ class Loader extends Curl
                             "-c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 " .
                             "\"{$tempPath}\" && ". ($os == "WIN" ? "MOVE /Y" : "mv -f") .
                             " \"{$tempPath}\" \"{$location}\"";
-            } elseif (isset($this->source[$save])) {
-                $tempfile  = $cache . "/" . uniqid(null, true);
+            } elseif (isset($this->source[$save]) ||
+                (empty($save) && ((isset($this->source["video"]) && $save = "video") || (isset($this->source["audio"]) && $save = "audio")))) {
+                $tempfile   = $cache . "/" . uniqid(null, true);
                 $this->saveTo($this->source[$save], $tempfile);
-                $mediaType = ($save == "video" ? $this->mediaType : "mp3");
-                $fakeFile  = uniqid(null, true) . "." . $mediaType;
-                $tempDest  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $fakeFile);
-                $tempPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $cache . "/" . $fakeFile);
-                $finalPath = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . $mediaType);
-                $command   = "{$path} && ffmpeg -y -i \"{$tempfile}\" \"{$tempPath}\" && " .
-                             ($os == "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
+                $mediaType  = ($save == "video" ? $this->mediaType : "mp3");
+                $fakeFile   = uniqid(null, true) . "." . $mediaType;
+                $tempDest   = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $fakeFile);
+                $tempPath   = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $cache . "/" . $fakeFile);
+                $finalPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . $mediaType);
+                $preCommand = "{$path} && ffmpeg -y -i \"{$tempfile}\" \"{$tempPath}\" && ";
+                $aftCommand = ($os == "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
+                $command    = $preCommand . $aftCommand;
             } else {
                 exit("Please assign `audio' or `video'.\r\n");
             }
 
-            exec($command);
+            @exec($command);
 
-            $wfio = ($os == "WIN" ? "wfio://" : "");
-
-            if (is_file($wfio . $finalPath)) {
+            if (@is_file($wfio . $finalPath)) {
                 @unlink($wfio . $finalPath);
             }
 
