@@ -22,16 +22,16 @@ or
 	php youtube-dl.php -help
 
 #For Windows / MacOSX Users
-###Web console
+##Web console
 I wrote a simple web console for windows users, just click **start-youtube-dl.bat** / **start-youtube-dl.command** then system will start php server on port 55555 and open Google Chrome.
 
 #For Windows Users
-###Packed bundles
+##Packed bundles
 [PHP 5.6.3](http://goo.gl/JWVzm4), extract it to C:\, it include wfio system.   
 
 [ffmpeg](http://goo.gl/OFhRje), extract it to the folder youtube-dl installed in ffmpeg/  
 
-###Binary
+##Binary
 [youtube-dl](http://goo.gl/CEYyLq) stable veriosn 0.1.1 download link is here.(include php and ffmpeg)  
 
 #Issue / Todo
