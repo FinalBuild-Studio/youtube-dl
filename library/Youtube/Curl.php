@@ -10,11 +10,8 @@ class Curl
 
     protected function request($url = "")
     {
-        $this->init();
-        $this->setOption(CURLOPT_RETURNTRANSFER, true);
-        $this->setOption(CURLOPT_URL, $url);
-
-        $result = curl_exec($this->ch);
+        $this->init($url);
+        $this->execute($result);
         $this->release();
 
         return $result;
@@ -22,18 +19,22 @@ class Curl
 
     protected function saveTo($url = "", $location = "")
     {
-        $this->init();
-        $fn = fopen($location, "w+");
-        $this->setOption(CURLOPT_FILE, $fn);
+        $this->init($url);
+        $this->setOption(CURLOPT_FILE, fopen($location, "w+"));
         $this->setOption(CURLOPT_BINARYTRANSFER, true);
-        $this->setOption(CURLOPT_URL, $url);
-        curl_exec($this->ch);
+        $this->execute();
         $this->release();
     }
 
-    private function init()
+    private function execute(&$result = "")
+    {
+        $result = curl_exec($this->ch);
+    }
+
+    private function init($url = "")
     {
         $this->ch = curl_init();
+        $this->setOption(CURLOPT_URL, $url);
         $this->setOption(CURLOPT_FOLLOWLOCATION, true);
         $this->setOption(CURLOPT_SSL_VERIFYPEER, false);
         $this->setOption(CURLOPT_SSL_VERIFYHOST, false);

@@ -5,7 +5,8 @@
     $accept = array("-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy");
 
     if (count($argv) == 1) {
-        echo "youtube-dl.php: missing operand\r\nTry `php youtube-dl.php -help' or `php youtube-dl.php -h' for more information.\r\n";
+        echo "youtube-dl.php: missing operand.\r\n" .
+             "Try `php youtube-dl.php -help' or `php youtube-dl.php -h' for more information.\r\n";
         exit();
     }
 
@@ -74,9 +75,9 @@
 
 
     echo "Analyzing best media type ...", PHP_EOL;
-    if (!($loader = $loader->getMedia($format))) {
+    if (!($loader = @$loader->getMedia($format))) {
         exit("Can not find proper media format. Please try `mp4' or `webm' instead.\r\n");
     }
 
     echo "Try downloading with curl ...", PHP_EOL;
-    $loader->save($path, $save);
+    @$loader->save($path, $save);

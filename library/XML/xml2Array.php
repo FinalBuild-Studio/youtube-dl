@@ -2,13 +2,15 @@
 
 namespace XML;
 
-class xml2Array {
+class xml2Array
+{
     
     var $arrOutput = array();
     var $resParser;
     var $strXmlData;
     
-    function parse($strInputXML) {
+    function parse($strInputXML)
+    {
     
             $this->resParser = xml_parser_create ();
             xml_set_object($this->resParser,$this);
@@ -28,12 +30,14 @@ class xml2Array {
             return $this->arrOutput;
     }
 
-    function tagOpen($parser, $name, $attrs) {
+    function tagOpen($parser, $name, $attrs)
+    {
        $tag=array("name"=>$name,"attrs"=>$attrs); 
        array_push($this->arrOutput,$tag);
     }
     
-    function tagData($parser, $tagData) {
+    function tagData($parser, $tagData)
+    {
        if(trim($tagData)) {
             if(isset($this->arrOutput[count($this->arrOutput)-1]['tagData'])) {
                 $this->arrOutput[count($this->arrOutput)-1]['tagData'] .= $tagData;
@@ -44,7 +48,8 @@ class xml2Array {
        }
     }
     
-    function tagClosed($parser, $name) {
+    function tagClosed($parser, $name)
+    {
        $this->arrOutput[count($this->arrOutput)-2]['children'][] = $this->arrOutput[count($this->arrOutput)-1];
        array_pop($this->arrOutput);
     }

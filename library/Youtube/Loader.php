@@ -125,15 +125,22 @@ class Loader extends Curl
             $os        = substr(PHP_OS, 0, 3);
             $path      = "{$path}/{$os}/bin";
             $path      = realpath($path);
-            $path      = $os == "WIN" ? "set path=%path%;{$path};" : "export PATH=\$PATH:{$path}";
+            $path      = $os == "WIN" ? "set path=%path%;{$path};" : "export PATH=\"\$PATH:{$path}\"";
             $cache     = dirname(__FILE__) . "/../../cache";
             $cache     = realpath($cache);
             $location  = realpath($location);
             if (empty($save)) {
                 $audio = $cache . "/" . uniqid(null, true);
                 $video = $cache . "/" . uniqid(null, true);
-                $this->saveTo($this->source["audio"], $audio);
-                $this->saveTo($this->source["video"], $video);
+                
+                if (isset($this->source["audio"])) {
+                    $this->saveTo($this->source["audio"], $audio);
+                }
+
+                if (isset($this->source["video"])) {
+                    $this->saveTo($this->source["video"], $video);
+                }
+                
                 $audio     = realpath($audio);
                 $video     = realpath($video);
                 $tempfile  = uniqid(null, true) . "." . $this->mediaType;
@@ -151,11 +158,13 @@ class Loader extends Curl
             } elseif (isset($this->source[$save])) {
                 $tempfile  = $cache . "/" . uniqid(null, true);
                 $this->saveTo($this->source[$save], $tempfile);
-                $fakeFile  = uniqid(null, true) . "." . ($save == "video" ? $this->mediaType : "mp3");
+                $mediaType = ($save == "video" ? $this->mediaType : "mp3");
+                $fakeFile  = uniqid(null, true) . "." . $mediaType;
                 $tempDest  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $fakeFile);
                 $tempPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $cache . "/" . $fakeFile);
-                $finalPath = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . ($save == "video" ? $this->mediaType : "mp3"));
-                $command   = "{$path} && ffmpeg -y -i \"{$tempfile}\" \"{$tempPath}\" && " . ($os == "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
+                $finalPath = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . $mediaType);
+                $command   = "{$path} && ffmpeg -y -i \"{$tempfile}\" \"{$tempPath}\" && " .
+                             ($os == "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
             } else {
                 exit("Please assign `audio' or `video'.\r\n");
             }
@@ -188,11 +197,14 @@ class Loader extends Curl
 
     private function decode($sig, $arr)
     {
-        if (preg_match("/^(\-|)\d+$/", $sig)) return null;
+        if (preg_match("/^\-?\d+$/", $sig)) {
+            return null;
+        }
+
         $sigA = str_split(strval($sig));
         for ($i = 0; $i < count($arr); $i ++) {
             $act = $arr[$i];
-            if (!preg_match("/^(\-|)\d+$/", $act)) {
+            if (!preg_match("/^\-?\d+$/", $act)) {
                 return null;
             }
 
@@ -205,8 +217,8 @@ class Loader extends Curl
 
     private function swap($a, $b)
     {
-        $c = $a[0];
-        $a[0] = $a[$b % count($a)];
+        $c     = $a[0];
+        $a[0]  = $a[$b % count($a)];
         $a[$b] = $c;
         return $a;
     }
@@ -214,7 +226,9 @@ class Loader extends Curl
 
     private function decryptSignature($sig, $code)
     {
-        if ($sig == null) return '';    
+        if ($sig == null) {
+            return '';
+        }    
 
         $arr = $this->fetchSig($code);
 
@@ -266,10 +280,8 @@ class Loader extends Curl
 
                 if ($arrSlice && count($arrSlice) >= 2) {
                     $slice = intval($arrSlice[1], 10);
-                    if (preg_match("/^(\-|)\d+$/", $slice)) {
+                    if (preg_match("/^\-?\d+$/", $slice)) {
                         $decodeArray[] = -$slice;
-                    } else {
-                        // return '';
                     }
                 } elseif ($arrReverse && count($arrReverse) >= 1) { // reverse
                     $decodeArray[] = 0;
@@ -282,20 +294,14 @@ class Loader extends Curl
                         $inline = intval($inline, 10);
                         $decodeArray[] = $inline;
                         $key += 2;
-                    } else {
-                        // return '';  
                     }
                 } elseif ($check = strpos($piece, ',') && $check >= 0) { // swap
                     preg_match($regSwap, $piece, $swap);
                     $swap = isset($swap[1]) ? $swap[1] : null;
                     $swap = intval($swap, 10);
-                    if (preg_match("/^(\-|)\d+$/", $swap) && $swap > 0){
+                    if (preg_match("/^\-?\d+$/", $swap) && $swap > 0){
                         $decodeArray[] = $swap;
-                    } else {
-                        // return '';
                     }
-                } else {
-                    // return '';
                 }
             }
         }
