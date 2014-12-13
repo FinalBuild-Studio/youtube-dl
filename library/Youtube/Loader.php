@@ -154,7 +154,7 @@ class Loader extends Curl
                             "\"{$tempPath}\" && ". ($os == "WIN" ? "MOVE /Y" : "mv -f") .
                             " \"{$tempPath}\" \"{$location}\"";
             } elseif (isset($this->source[$save]) ||
-                (empty($save) && ((isset($this->source["video"]) && $save = "video") || (isset($this->source["audio"]) && $save = "audio" && $this->mediaType = "mp3")))) {
+                (empty($save) && ((isset($this->source["video"]) && $save = "video") || (isset($this->source["audio"]) && $save = "audio")))) {
                 $tempfile   = $cache . "/" . uniqid(null, true);
                 $this->saveTo($this->source[$save], $tempfile);
                 $mediaType  = ($save == "video" ? $this->mediaType : "mp3");
