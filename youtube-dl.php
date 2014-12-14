@@ -2,7 +2,7 @@
 
     require_once dirname(__FILE__) . "/library/autoload.php";
 
-    $accept = array("-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy");
+    $accept = array("-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy", "-height", "-l", "-list");
 
     if (count($argv) == 1) {
         echo "youtube-dl.php: missing operand.\r\n" .
@@ -10,8 +10,9 @@
         exit();
     }
 
-    $concat = false;
-    $last   = "";
+    $listYoutube = false;
+    $concat      = false;
+    $last        = "";
     foreach ($argv as $key => $value) {
         if ($key >= 1) {
             if ($value == "-h" || $value == "-help") {
@@ -20,11 +21,17 @@
                      "\r\n-i, -id\t\tSpecify youtube id" .
                      "\r\n-f, -format\tSpecify youtube source format" .
                      "\r\n-p, -path\tSave file to this location" .
+                     "\r\n-l, -list\tList this youtube video height." .
                      "\r\n-s, -save\tOnly save specified format, two values `audio' or `video'. \r\n" .
                      "\t\tSelect `audio' will save as mp3 file." .
+                     "\r\n-height\t\tSave file with specified height.(Please check with option -l)" .
                      "\r\n-proxy\t\tAllow proxy\r\n" .
                      "\r\nPlease report bugs to (michael34435@gmail.com).\r\n";
                 exit();
+            }
+
+            if ($value == "-l" || $value == "-list") {
+                $listYoutube = true;
             }
 
             if ($concat) {
@@ -46,6 +53,7 @@
     $id     = getenv("-id");
     $proxy  = getenv("-proxy");
     $save   = getenv("-save");
+    $height = getenv("-height");
     $id     = empty($id) ? getenv("-i") : $id;
     $path   = empty($path) ? getenv("-p") : $path;
     $format = empty($format) ? getenv("-f") : $format;
@@ -56,13 +64,14 @@
         exit("No yt id specified.\r\n");
     }
 
-    if (empty($path)) {
+    if (!$listYoutube && empty($path)) {
         exit("No save path specified.\r\n");
     }
 
     $loader = new Youtube\Loader();
     
     if (!empty($proxy)) {
+        echo "Setting youtube proxy ...", PHP_EOL;
         $loader->setProxy($proxy);   
     }
 
@@ -73,11 +82,28 @@
         exit("Download failed, please add proxy setting or retry again.\r\n");
     }
 
+    if ($listYoutube) {
+        @$loader->setReturnHeight();
+    } else {
+        if (!empty($height)) {
+            echo "Setting video height ...", PHP_EOL;
+            @$loader->setHeight($height);
+        }
+    }
 
-    echo "Analyzing best media type ...", PHP_EOL;
+    echo "Analyzing media type ...", PHP_EOL;
     if (!($loader = @$loader->getMedia($format))) {
         exit("Can not find proper media format. Please try `mp4' or `webm' instead.\r\n");
     }
+
+    if (is_array($loader)) {
+        echo "Available height:", PHP_EOL;
+        foreach ($loader as $height) {
+            echo $height . "pixel", PHP_EOL;
+        }
+        exit();
+    }
+
 
     echo "Try downloading with curl ...", PHP_EOL;
     @$loader->save($path, $save);

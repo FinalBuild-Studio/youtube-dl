@@ -5,16 +5,32 @@ namespace Youtube;
 class Loader extends Curl 
 {
 
-    private $data       = "";
-    private $set        = array();
-    private $audio      = "";
-    private $video      = "";
-    private $source     = array();
-    private $baseUrl    = "https://www.youtube.com/watch?v=";
-    private $title      = "";
-    private $mediaType  = "";
-    private $exceptType = array("webm" => "mkv");
-    private $skipFormat = array("mp4");
+    const   BEST_METHOD      = 0;
+    const   SPECIFIED_HEIGHT = 1;
+    const   RETURN_HEIGHT    = 2;
+    private $data            = "";
+    private $set             = array();
+    private $audio           = "";
+    private $video           = "";
+    private $source          = array();
+    private $baseUrl         = "https://www.youtube.com/watch?v=";
+    private $title           = "";
+    private $mediaType       = "";
+    private $exceptType      = array("webm" => "mkv");
+    private $skipFormat      = array("mp4");
+    private $selectMethod    = self::BEST_METHOD;
+    private $selectWidth     = 0;
+
+    public function setHeight($width = 0)
+    {
+        $this->selectMethod = self::SPECIFIED_HEIGHT;
+        $this->selectWidth  = $width;
+    }
+
+    public function setReturnHeight()
+    {
+        $this->selectMethod = self::RETURN_HEIGHT;
+    }
 
     public function setProxy($proxy)
     {
@@ -76,7 +92,8 @@ class Loader extends Curl
 
     public function getMedia($mediaType = "mp4")
     {
-        $max = array();
+        $data = array();
+        $max  = array();
         if (!empty($this->set)) {
             $this->mediaType = $this->getMediaType($mediaType);
             foreach ($this->set as $setKey => $setValue) {
@@ -96,15 +113,38 @@ class Loader extends Curl
                         $mediaSelect = $setValue["children"];
                         foreach ($mediaSelect as $mediaSelectKey => $mediaSelectValue) {
                             foreach ($mediaSelectValue["attrs"] as $mediaSelectValueKey => $mediaSelectValueSubValue) {
-                                if ($mediaSelectValueKey == "BANDWIDTH") {
-                                    if (intval($mediaSelectValueSubValue) > $max[$media]) {
-                                        $max[$media] = intval($mediaSelectValueSubValue);
-                                        foreach ($mediaSelectValue["children"] as $mediaSelectChildrenKey => $mediaSelectChildrenValue) {
-                                            if ($mediaSelectChildrenValue["name"] == "BASEURL") {
-                                                $this->source[$media] = $mediaSelectChildrenValue["tagData"];
+                                switch ($this->selectMethod) {
+                                    case self::BEST_METHOD: 
+                                        if ($mediaSelectValueKey == "BANDWIDTH") {
+                                            if (intval($mediaSelectValueSubValue) > $max[$media]) {
+                                                $max[$media] = intval($mediaSelectValueSubValue);
+                                                $this->source[$media] = $this->getTagData($mediaSelectValue);
                                             }
                                         }
-                                    }
+                                        
+                                        break;
+                                    case self::SPECIFIED_HEIGHT:
+                                        if ($mediaSelectValueKey == "BANDWIDTH" && $media == "audio") {
+                                            if (intval($mediaSelectValueSubValue) > $max[$media]) {
+                                                $max[$media] = intval($mediaSelectValueSubValue);
+                                                $this->source[$media] = $this->getTagData($mediaSelectValue);
+                                            }
+                                        } elseif ($mediaSelectValueKey == "HEIGHT" && $media == "video") {
+                                            if (intval($this->selectWidth) >= intval($mediaSelectValueSubValue)
+                                                && intval($mediaSelectValueSubValue) > $max[$media]) {
+                                                $max[$media] = intval($mediaSelectValueSubValue);
+                                                $this->source[$media] = $this->getTagData($mediaSelectValue);
+                                            }
+                                        }
+                                        
+                                        break;
+
+                                    case self::RETURN_HEIGHT:
+                                        if ($media == "video" && $mediaSelectValueKey == "HEIGHT") {
+                                            $data[] = $mediaSelectValueSubValue;
+                                        }
+
+                                        break;
                                 }
                             }
                         }
@@ -112,7 +152,8 @@ class Loader extends Curl
                 }
             }
 
-            return $this;
+
+            return !empty($data) && sort($data) ? $data : $this;
         }
 
         return false;
@@ -305,5 +346,14 @@ class Loader extends Curl
         }
 
         return $decodeArray;
+    }
+
+    private function getTagData($mediaSelectValue)
+    {
+        foreach ($mediaSelectValue["children"] as $mediaSelectChildrenKey => $mediaSelectChildrenValue) {
+            if ($mediaSelectChildrenValue["name"] == "BASEURL") {
+                return $mediaSelectChildrenValue["tagData"];
+            }
+        }
     }
 }
