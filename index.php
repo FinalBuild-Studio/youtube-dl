@@ -101,6 +101,7 @@
             <option value="480" <?php echo @$_POST["height"] == "480" ? "selected" : ""; ?>>480p</option>
             <option value="720" <?php echo @$_POST["height"] == "720" ? "selected" : ""; ?>>720p</option>
             <option value="1080" <?php echo @$_POST["height"] == "1080" ? "selected" : ""; ?>>1080p</option>
+            <option value="1440" <?php echo @$_POST["height"] == "1440" ? "selected" : ""; ?>>1440p</option>
             <option value="4096" <?php echo @$_POST["height"] == "4096" ? "selected" : ""; ?>>4096p</option>
           </select>
         </div>
