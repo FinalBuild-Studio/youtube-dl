@@ -117,7 +117,7 @@ class Loader extends Curl
                                     case self::BEST_METHOD: 
                                         if ($mediaSelectValueKey == "BANDWIDTH") {
                                             if (intval($mediaSelectValueSubValue) > $max[$media]) {
-                                                $max[$media] = intval($mediaSelectValueSubValue);
+                                                $max[$media]          = intval($mediaSelectValueSubValue);
                                                 $this->source[$media] = $this->getTagData($mediaSelectValue);
                                             }
                                         }
@@ -126,13 +126,13 @@ class Loader extends Curl
                                     case self::SPECIFIED_HEIGHT:
                                         if ($mediaSelectValueKey == "BANDWIDTH" && $media == "audio") {
                                             if (intval($mediaSelectValueSubValue) > $max[$media]) {
-                                                $max[$media] = intval($mediaSelectValueSubValue);
+                                                $max[$media]          = intval($mediaSelectValueSubValue);
                                                 $this->source[$media] = $this->getTagData($mediaSelectValue);
                                             }
                                         } elseif ($mediaSelectValueKey == "HEIGHT" && $media == "video") {
                                             if (intval($this->selectWidth) >= intval($mediaSelectValueSubValue)
                                                 && intval($mediaSelectValueSubValue) > $max[$media]) {
-                                                $max[$media] = intval($mediaSelectValueSubValue);
+                                                $max[$media]          = intval($mediaSelectValueSubValue);
                                                 $this->source[$media] = $this->getTagData($mediaSelectValue);
                                             }
                                         }

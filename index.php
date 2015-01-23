@@ -65,15 +65,15 @@
       <form method="post">
         <div class="form-element">
           <label>下載網址</label>
-          <input type="textbox" name="url" placeholder="請輸入youtube網址或ID" required value="<?php echo @$_POST["url"]; ?>">
+          <input type="text" name="url" placeholder="請輸入youtube網址或ID" required value="<?php echo @$_POST["url"]; ?>">
         </div>
         <div class="form-element">
           <label>儲存位置</label>
-          <input type="textbox" name="location" placeholder="請輸入儲存位置" value="D:/" required value="<?php echo @$_POST["location"]; ?>">
+          <input type="text" name="location" placeholder="請輸入儲存位置" value="D:/" required value="<?php echo @$_POST["location"]; ?>">
         </div>
         <div class="form-element">
           <label>代理設置</label>
-          <input type="textbox" name="proxy" placeholder="請輸入代理伺服器, e.g. proxy.hinet.net:80" value="<?php echo @$_POST["proxy"]; ?>">
+          <input type="text" name="proxy" placeholder="請輸入代理伺服器, e.g. proxy.hinet.net:80" value="<?php echo @$_POST["proxy"]; ?>">
         </div>
         <div class="form-element">
           <label>提取方式</label>
