@@ -1,5 +1,6 @@
 <?php
-
+    
+    error_reporting(0);
     require_once dirname(__FILE__) . "/library/autoload.php";
 
     $accept = array("-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy", "-height", "-l", "-list");
@@ -26,7 +27,7 @@
                      "\t\tSelect `audio' will save as mp3 file." .
                      "\r\n-height\t\tSave file with specified height.(Please check with option -l)" .
                      "\r\n-proxy\t\tAllow proxy\r\n" .
-                     "\r\nPlease report bugs to (michael34435@gmail.com).\r\n";
+                     "\r\nPlease report bugs to (michael34435gmail.com).\r\n";
                 exit();
             }
 
@@ -78,21 +79,21 @@
     $loader = $loader->visit($id);
 
     echo "Analyzing available media manifest ...", PHP_EOL;
-    if (!($loader = @$loader->getManifest())) {
+    if (!($loader = $loader->getManifest())) {
         exit("Download failed, please add proxy setting or retry again.\r\n");
     }
 
     if ($listYoutube) {
-        @$loader->setReturnHeight();
+        $loader->setReturnHeight();
     } else {
         if (!empty($height)) {
             echo "Setting video height ...", PHP_EOL;
-            @$loader->setHeight($height);
+            $loader->setHeight($height);
         }
     }
 
     echo "Analyzing media type ...", PHP_EOL;
-    if (!($loader = @$loader->getMedia($format))) {
+    if (!($loader = $loader->getMedia($format))) {
         exit("Can not find proper media format. Please try `mp4' or `webm' instead.\r\n");
     }
 
@@ -106,4 +107,4 @@
 
 
     echo "Try downloading with curl ...", PHP_EOL;
-    @$loader->save($path, $save);
+    $loader->save($path, $save);
