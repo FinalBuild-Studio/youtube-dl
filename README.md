@@ -31,7 +31,7 @@ I wrote a simple web console for windows users, just click **start-youtube-dl.ba
 
 [ffmpeg](http://goo.gl/OFhRje), extract it to the folder youtube-dl installed in ffmpeg/  
 
-[wfio](https://github.com/kenjiuno/php-wfio), it was contributed by kenjijuno, a extension allows your php can read utf8 file path.
+[wfio](https://github.com/kenjiuno/php-wfio), it was contributed by kenjijuno, an extension allows your php can read utf8 file path.
 
 ###Binary
 [youtube-dl](http://goo.gl/CEYyLq) stable veriosn 0.1.1 download link is here.(include php and ffmpeg)  
