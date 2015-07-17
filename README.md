@@ -4,16 +4,17 @@ youtube-dl
 A downloader for PHP to download best quality youtube video.
 
 ##Installation
-1. Please unzip 7z file to ffmpeg folder first.  
-2. Add new folder then download correspond [ffmpeg](https://www.ffmpeg.org/) if you use other platform(not windows, e.g. MacOSX). ffmpeg must be under folder ffmpeg/{YOUR_OS}/bin/ 
+1. Please unzip 7z file to ffmpeg folder first or you can use 'brower' to install to dependency like ffmpeg or php-cli(for Mac users, for unix users, use apt-get instead).  
+2. Add new folder then download correspond [ffmpeg](https://www.ffmpeg.org/) if you use Windows.
 3. Download [wfio](https://github.com/kenjiuno/php-wfio) system to support unicode if you use windows.
+4. Add permissions to 777 to the whole folder if you do not use Windows.
 
 ##Usage
 for basic
 
 	php youtube-dl.php -i {YOUTUBE_ID} -p {SAVE_LOCATION}
 
-for more information 
+for more information
 
 	php youtube-dl.php -h
 
@@ -27,7 +28,7 @@ I wrote a simple web console for windows users, just click **start-youtube-dl.ba
 
 ##For Windows Users
 ###Packed bundles
-[PHP 5.6.3](http://goo.gl/JWVzm4), extract it to C:\, it include wfio system.   
+[PHP 5.6.3](http://goo.gl/JWVzm4), extract it to C:\, it include wfio system.
 
 [ffmpeg](http://goo.gl/OFhRje), extract it to the folder youtube-dl installed in ffmpeg/  
 
@@ -35,6 +36,10 @@ I wrote a simple web console for windows users, just click **start-youtube-dl.ba
 
 ###Binary
 [youtube-dl](http://goo.gl/CEYyLq) stable veriosn 0.1.1 download link is here.(include php and ffmpeg)  
+
+###MacOS Users
+Preferences > Settings > Shell  
+on 'When the shell exits' chosen 'Close the window'
 
 ##Issue / Todo
 1. Save path do not support unicode now. Please try English path instead.

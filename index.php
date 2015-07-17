@@ -4,8 +4,6 @@
   if ($method == "POST") {
     set_time_limit(0);
     $os      = substr(PHP_OS, 0, 3);
-    $tempbat = uniqid(null, true) . ($os == "WIN" ? ".bat" : ".sh");
-    $cache   = dirname(__FILE__) . "/cache/";
     $urls    = explode(",", $_POST["url"]);
 
     foreach ($urls as $url) {
@@ -16,23 +14,20 @@
       } else {
         $id = $url;
       }
-      $prefex  = $os == "WIN" ? "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php;%cd%\\php; && " : "cwd=\$(pwd) && export path=\$path:\$(pwd)/php && ";
-      $command = "{$prefex}php youtube-dl.php " .
+      $prefex  = $os == "WIN" ? "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php;%cd%\\php; && " : "";
+      $command = "{$prefex}php $(pwd)/youtube-dl.php " .
                   "-i \"{$id}\" -f \"{$_POST["format"]}\" " .
                   "-p \"{$_POST["location"]}\" " .
                   "-s \"{$_POST["save"]}\" " .
                   "-proxy \"{$_POST["proxy"]}\" " .
                   "-height \"{$_POST["height"]}\" && exit";
-      $bat     = $cache . $tempbat;
-      file_put_contents($bat, $command);
       $execute = "";
       if ($os == "WIN") {
-        $execute = "START \"\" \"{$bat}\"";
+        $execute = "START \"\" \"{$command}\"";
       } else {
-        $execute = 'osascript -e "tell application \"Terminal\" to do script \"' . $bat . '\""';
+        $execute = 'osascript -e "tell application \"Terminal\" to do script \"' . $command . '\""';
       }
       exec($execute);
-      @unlink($bat);
     }
   }
 ?>
@@ -45,7 +40,7 @@
       .form-element > input, select {
         margin: 10px;
       }
-      
+
       .form-element > label {
         clear: both;
       }
@@ -70,7 +65,7 @@
         </div>
         <div class="form-element">
           <label>儲存位置</label>
-          <input type="text" name="location" placeholder="請輸入儲存位置" value="D:/" required value="<?php echo $_POST["location"]; ?>">
+          <input type="text" name="location" placeholder="請輸入儲存位置" value="<?php echo $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "converted" ?>" required value="<?php echo $_POST["location"]; ?>">
         </div>
         <div class="form-element">
           <label>代理設置</label>
