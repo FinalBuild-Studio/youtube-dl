@@ -1,7 +1,7 @@
 youtube-dl
 ==========
 
-A downloader for PHP to download best quality youtube video.ß
+A downloader for PHP to download best quality youtube video.
 
 ##Installation
 **Step1.** Please unzip 7z file to ffmpeg folder first or you can use 'brew' to install to dependency like ffmpeg or php-cli(for Mac users. For unix users, use apt-get).  
