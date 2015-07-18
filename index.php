@@ -65,7 +65,7 @@
         </div>
         <div class="form-element">
           <label>儲存位置</label>
-          <input type="text" name="location" placeholder="請輸入儲存位置" value="<?php echo isset($_POST['location']) ? $_POST['location'] : $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "converted" ?>" required">
+          <input type="text" name="location" placeholder="請輸入儲存位置" value="<?php echo isset($_POST['location']) ? $_POST['location'] : $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . "converted" ?>" required>
         </div>
         <div class="form-element">
           <label>代理設置</label>
