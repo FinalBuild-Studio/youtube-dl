@@ -9,12 +9,12 @@ A downloader for PHP to download best quality youtube video.ß
 
 
 	brew install ffmpeg
-	brew install php-cli
+	brew install php5-cli
 
 or
 
 	apt-get install ffmpeg
-	apt-get install php-cli
+	apt-get install php5-cli
 
 **Step2.** Add new folder then download correspond [ffmpeg](https://www.ffmpeg.org/) if you use Windows.  
 **Step3.** Download [wfio](https://github.com/kenjiuno/php-wfio) system to support unicode if you use Windows.  
