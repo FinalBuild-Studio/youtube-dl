@@ -1,18 +1,15 @@
 youtube-dl
 ==========
 
-A downloader for PHP to download best quality youtube video.
+A downloader for PHP to download best quality youtube video.ß
 
 ##Installation
 1. Please unzip 7z file to ffmpeg folder first or you can use 'brew' to install to dependency like ffmpeg or php-cli(for Mac users. For unix users, use apt-get instead).
-
-  	brew install ffmpeg
-	brew install php-cli
-
+		brew install ffmpeg
+		brew install php-cli
 or
-	apt-get install ffmpeg
-	apt-get install php-cli
-
+		apt-get install ffmpeg
+		apt-get install php-cli
 2. Add new folder then download correspond [ffmpeg](https://www.ffmpeg.org/) if you use Windows.
 3. Download [wfio](https://github.com/kenjiuno/php-wfio) system to support unicode if you use Windows.
 4. Add permissions 777 to the whole folder if you do not use Windows(this will help you to create execute .command file).
