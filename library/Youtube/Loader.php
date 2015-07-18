@@ -2,7 +2,7 @@
 
 namespace Youtube;
 
-class Loader extends Curl 
+class Loader extends \Http\Curl 
 {
 
     const   BEST_METHOD      = 0;
@@ -114,14 +114,14 @@ class Loader extends Curl
                         foreach ($mediaSelect as $mediaSelectKey => $mediaSelectValue) {
                             foreach ($mediaSelectValue["attrs"] as $mediaSelectValueKey => $mediaSelectValueSubValue) {
                                 switch ($this->selectMethod) {
-                                    case self::BEST_METHOD: 
+                                    case self::BEST_METHOD:
                                         if ($mediaSelectValueKey == "BANDWIDTH") {
                                             if (intval($mediaSelectValueSubValue) > $max[$media]) {
                                                 $max[$media]          = intval($mediaSelectValueSubValue);
                                                 $this->source[$media] = $this->getTagData($mediaSelectValue);
                                             }
                                         }
-                                        
+
                                         break;
                                     case self::SPECIFIED_HEIGHT:
                                         if ($mediaSelectValueKey == "BANDWIDTH" && $media == "audio") {
@@ -136,7 +136,7 @@ class Loader extends Curl
                                                 $this->source[$media] = $this->getTagData($mediaSelectValue);
                                             }
                                         }
-                                        
+
                                         break;
 
                                     case self::RETURN_HEIGHT:
@@ -176,17 +176,17 @@ class Loader extends Curl
             if (empty($save) && isset($this->source["audio"]) && isset($this->source["video"])) {
                 $audio = $cache . "/" . uniqid(null, true);
                 $video = $cache . "/" . uniqid(null, true);
-                
+
                 $this->saveTo($this->source["audio"], $audio);
                 $this->saveTo($this->source["video"], $video);
-                
+
                 $audio     = realpath($audio);
                 $video     = realpath($video);
                 $tempfile  = uniqid(null, true) . "." . $this->mediaType;
                 $finalPath = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . $this->mediaType);
                 $tempDest  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $tempfile);
                 $tempPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $cache . "/" . $tempfile);
-                
+
                 // ffmpeg -i video.mp4 -i audio.wav \
                 // -c:v copy -c:a aac -strict experimental \
                 // -map 0:v:0 -map 1:a:0 output.mp4
@@ -267,7 +267,7 @@ class Loader extends Curl
     {
         if ($sig == null) {
             return '';
-        }    
+        }
 
         $arr = $this->fetchSig($code);
 
@@ -275,8 +275,8 @@ class Loader extends Curl
             $sig2 = $this->decode($sig, $arr);
             if ($sig2) return $sig2;
         }
-    
-        return $sig; 
+
+        return $sig;
     }
 
     private function fetchSig($code)
@@ -301,16 +301,16 @@ class Loader extends Curl
         $sliceFunctionName = str_replace('$', '\\$', $sliceMatch[1]);
 
         // tools
-        $regSlice = '/\\.(?:' . 'slice' . ($sliceFunctionName ? '|' . $sliceFunctionName : '') . 
+        $regSlice = '/\\.(?:' . 'slice' . ($sliceFunctionName ? '|' . $sliceFunctionName : '') .
     ')\\s*\\(\\s*(?:[a-zA-Z_$][\\w$]*\\s*,)?\\s*([0-9]+)\\s*\\)/';
-        $regReverse = '/\\.(?:' . 'reverse' . ($reverseFunctionName ? '|' . $reverseFunctionName : '') . 
+        $regReverse = '/\\.(?:' . 'reverse' . ($reverseFunctionName ? '|' . $reverseFunctionName : '') .
     ')\\s*\\([^\\)]*\\)/';
         $regSwap = "/[\w$]+\s*\(\s*[\w$]+\s*,\s*([0-9]+)\s*\)/";
         $regInline = "/[\w$]+\[0\]\s*=\s*[\w$]+\[([0-9]+)\s*%\s*[\w$]+\.length\]/";
 
         $codePieces = explode(";", $sigCodeMatch[1]);
         $decodeArray = array();
-        for ($key = 0; $key < count($codePieces); $key++) { 
+        for ($key = 0; $key < count($codePieces); $key++) {
             $piece = $codePieces[$key];
             $piece = trim($piece);
             if (count($piece) > 0) {
