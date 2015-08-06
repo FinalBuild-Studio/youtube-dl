@@ -18,7 +18,7 @@ or
 
 **Step2.** Add new folder then download correspond [ffmpeg](https://www.ffmpeg.org/) if you use Windows.  
 **Step3.** Download [wfio](https://github.com/kenjiuno/php-wfio) system to support unicode if you use Windows.  
-**Step4.** Add permissions 777 to the whole folder if you do not use Windows(this will help you to create execute .command file).  
+**Step4.** Add permissions 777 to the whole folder if you do not use Windows(this will help you to create executable .command file).  
 
 ##Usage
 for basic
