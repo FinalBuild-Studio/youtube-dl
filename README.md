@@ -35,7 +35,7 @@ or
 
 ##For Windows / MacOSX Users
 ###Web console
-I wrote a simple web console for windows users, just click **start-youtube-dl.bat** / **start-youtube-dl.command** then system will start php server on port 55555 and open [Google Chrome](https://www.google.com.tw/chrome).
+I wrote a simple web console for windows users, just click **start-youtube-dl.bat** / **start-youtube-dl.command** then system will start php server on port 55555.
 
 ##For Windows Users
 ###Packed bundles
