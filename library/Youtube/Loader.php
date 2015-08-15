@@ -2,7 +2,7 @@
 
 namespace Youtube;
 
-class Loader extends \Http\Curl 
+class Loader extends \Http\Curl
 {
 
     const   BEST_METHOD      = 0;
@@ -152,7 +152,6 @@ class Loader extends \Http\Curl
                 }
             }
 
-
             return !empty($data) && sort($data) ? $data : $this;
         }
 
@@ -259,6 +258,7 @@ class Loader extends \Http\Curl
         $c     = $a[0];
         $a[0]  = $a[$b % count($a)];
         $a[$b] = $c;
+
         return $a;
     }
 
@@ -301,15 +301,15 @@ class Loader extends \Http\Curl
         $sliceFunctionName = str_replace('$', '\\$', $sliceMatch[1]);
 
         // tools
-        $regSlice = '/\\.(?:' . 'slice' . ($sliceFunctionName ? '|' . $sliceFunctionName : '') .
+        $regSlice    = '/\\.(?:' . 'slice' . ($sliceFunctionName ? '|' . $sliceFunctionName : '') .
     ')\\s*\\(\\s*(?:[a-zA-Z_$][\\w$]*\\s*,)?\\s*([0-9]+)\\s*\\)/';
-        $regReverse = '/\\.(?:' . 'reverse' . ($reverseFunctionName ? '|' . $reverseFunctionName : '') .
+        $regReverse  = '/\\.(?:' . 'reverse' . ($reverseFunctionName ? '|' . $reverseFunctionName : '') .
     ')\\s*\\([^\\)]*\\)/';
-        $regSwap = "/[\w$]+\s*\(\s*[\w$]+\s*,\s*([0-9]+)\s*\)/";
-        $regInline = "/[\w$]+\[0\]\s*=\s*[\w$]+\[([0-9]+)\s*%\s*[\w$]+\.length\]/";
-
-        $codePieces = explode(";", $sigCodeMatch[1]);
+        $regSwap     = "/[\w$]+\s*\(\s*[\w$]+\s*,\s*([0-9]+)\s*\)/";
+        $regInline   = "/[\w$]+\[0\]\s*=\s*[\w$]+\[([0-9]+)\s*%\s*[\w$]+\.length\]/";
+        $codePieces  = explode(";", $sigCodeMatch[1]);
         $decodeArray = array();
+
         for ($key = 0; $key < count($codePieces); $key++) {
             $piece = $codePieces[$key];
             $piece = trim($piece);
