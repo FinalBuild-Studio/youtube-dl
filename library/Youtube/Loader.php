@@ -9,25 +9,25 @@ class Loader extends \Http\Curl
     const   SPECIFIED_HEIGHT = 1;
     const   RETURN_HEIGHT    = 2;
     private $data            = "";
-    private $set             = array();
+    private $set             = [];
     private $audio           = "";
     private $video           = "";
-    private $source          = array();
+    private $source          = [];
     private $baseUrl         = "https://www.youtube.com/watch?v=";
     private $title           = "";
     private $mediaType       = "";
-    private $exceptType      = array("webm" => "mkv");
-    private $skipFormat      = array("mp4");
+    private $exceptType      = ["webm" => "mkv"];
+    private $skipFormat      = ["mp4"];
     private $selectMethod    = self::BEST_METHOD;
-    private $selectWidth     = 0;
+    private $selectHeight    = 0;
 
-    public function setHeight($width = 0)
+    public function setHeight($height = 0)
     {
         $this->selectMethod = self::SPECIFIED_HEIGHT;
-        $this->selectWidth  = $width;
+        $this->selectHeight = $height;
     }
 
-    public function setReturnHeight()
+    public function getReturnHeight()
     {
         $this->selectMethod = self::RETURN_HEIGHT;
     }
@@ -92,8 +92,8 @@ class Loader extends \Http\Curl
 
     public function getMedia($mediaType = "mp4")
     {
-        $data = array();
-        $max  = array();
+        $data = [];
+        $max  = [];
         if (!empty($this->set)) {
             $this->mediaType = $this->getMediaType($mediaType);
             foreach ($this->set as $setKey => $setValue) {
@@ -130,7 +130,7 @@ class Loader extends \Http\Curl
                                                 $this->source[$media] = $this->getTagData($mediaSelectValue);
                                             }
                                         } elseif ($mediaSelectValueKey == "HEIGHT" && $media == "video") {
-                                            if (intval($this->selectWidth) >= intval($mediaSelectValueSubValue)
+                                            if (intval($this->selectHeight) >= intval($mediaSelectValueSubValue)
                                                 && intval($mediaSelectValueSubValue) > $max[$media]) {
                                                 $max[$media]          = intval($mediaSelectValueSubValue);
                                                 $this->source[$media] = $this->getTagData($mediaSelectValue);
@@ -308,7 +308,7 @@ class Loader extends \Http\Curl
         $regSwap     = "/[\w$]+\s*\(\s*[\w$]+\s*,\s*([0-9]+)\s*\)/";
         $regInline   = "/[\w$]+\[0\]\s*=\s*[\w$]+\[([0-9]+)\s*%\s*[\w$]+\.length\]/";
         $codePieces  = explode(";", $sigCodeMatch[1]);
-        $decodeArray = array();
+        $decodeArray = [];
 
         for ($key = 0; $key < count($codePieces); $key++) {
             $piece = $codePieces[$key];

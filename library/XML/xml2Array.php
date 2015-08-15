@@ -5,7 +5,7 @@ namespace XML;
 class xml2Array
 {
 
-    var $arrOutput = array();
+    var $arrOutput = [];
     var $resParser;
     var $strXmlData;
 
@@ -31,7 +31,7 @@ class xml2Array
 
     function tagOpen($parser, $name, $attrs)
     {
-        $tag=array("name"=>$name,"attrs"=>$attrs);
+        $tag = ["name" => $name, "attrs" => $attrs];
         array_push($this->arrOutput,$tag);
     }
 

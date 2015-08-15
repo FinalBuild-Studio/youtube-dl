@@ -1,9 +1,9 @@
 <?php
-    
+
     error_reporting(0);
     require_once dirname(__FILE__) . "/library/autoload.php";
 
-    $accept = array("-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy", "-height", "-l", "-list");
+    $accept = ["-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy", "-height", "-l", "-list"];
 
     if (count($argv) == 1) {
         echo "youtube-dl.php: missing operand.\r\n" .
@@ -70,10 +70,10 @@
     }
 
     $loader = new Youtube\Loader();
-    
+
     if (!empty($proxy)) {
         echo "Setting youtube proxy ...", PHP_EOL;
-        $loader->setProxy($proxy);   
+        $loader->setProxy($proxy);
     }
 
     $loader = $loader->visit($id);
@@ -84,7 +84,7 @@
     }
 
     if ($listYoutube) {
-        $loader->setReturnHeight();
+        $loader->getReturnHeight();
     } else {
         if (!empty($height)) {
             echo "Setting video height ...", PHP_EOL;
