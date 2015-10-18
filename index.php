@@ -1,7 +1,7 @@
 <?php
   error_reporting(0);
   $method = $_SERVER['REQUEST_METHOD'];
-  if ($method == "POST") {
+  if ($method === "POST") {
     set_time_limit(0);
     $os      = substr(PHP_OS, 0, 3);
     $urls    = explode(",", $_POST["url"]);
@@ -14,7 +14,8 @@
       } else {
         $id = $url;
       }
-      $prefex  = $os == "WIN" ? "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php;%cd%\\php; && " : "";
+
+      $prefex  = $os === "WIN" ? "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php;%cd%\\php; && " : "";
       $command = "{$prefex}php $(pwd)/youtube-dl.php " .
                   "-i \"{$id}\" -f \"{$_POST["format"]}\" " .
                   "-p \"{$_POST["location"]}\" " .
@@ -22,11 +23,12 @@
                   "-proxy \"{$_POST["proxy"]}\" " .
                   "-height \"{$_POST["height"]}\" && exit";
       $execute = "";
-      if ($os == "WIN") {
+      if ($os === "WIN") {
         $execute = "START \"\" \"{$command}\"";
       } else {
         $execute = 'osascript -e "tell application \"Terminal\" to do script \"' . $command . '\""';
       }
+
       exec($execute);
     }
   }
@@ -45,18 +47,21 @@
         clear: both;
       }
 
-      #wrapper > form {
+      center > form {
         margin: 0 auto;
         width: 60%;
       }
 
-      #wrapper {
+      center {
         text-align: center;
+        width: 50%;
+        left: 25%;
+        position: relative;
       }
     </style>
   </head>
   <body>
-    <div id="wrapper">
+    <center>
       <h1>youtube-dl web console</h1>
       <form method="post">
         <div class="form-element">
@@ -89,20 +94,20 @@
         </div>
         <div class="form-element">
           <label>最大大小</label>
-          <select name="height">
-            <option value="">預設 (最大)</option>
-            <option value="144" <?php echo $_POST["height"] == "144" ? "selected" : ""; ?>>144p</option>
-            <option value="240" <?php echo $_POST["height"] == "240" ? "selected" : ""; ?>>240p</option>
-            <option value="360" <?php echo $_POST["height"] == "360" ? "selected" : ""; ?>>360p</option>
-            <option value="480" <?php echo $_POST["height"] == "480" ? "selected" : ""; ?>>480p</option>
-            <option value="720" <?php echo $_POST["height"] == "720" ? "selected" : ""; ?>>720p</option>
-            <option value="1080" <?php echo $_POST["height"] == "1080" ? "selected" : ""; ?>>1080p</option>
-            <option value="1440" <?php echo $_POST["height"] == "1440" ? "selected" : ""; ?>>1440p</option>
-            <option value="4096" <?php echo $_POST["height"] == "4096" ? "selected" : ""; ?>>4096p</option>
-          </select>
-        </div>
+            <select name="height">
+              <option value="">預設 (最大)</option>
+              <option value="144" <?php echo $_POST["height"] == "144" ? "selected" : ""; ?>>144p</option>
+              <option value="240" <?php echo $_POST["height"] == "240" ? "selected" : ""; ?>>240p</option>
+              <option value="360" <?php echo $_POST["height"] == "360" ? "selected" : ""; ?>>360p</option>
+              <option value="480" <?php echo $_POST["height"] == "480" ? "selected" : ""; ?>>480p</option>
+              <option value="720" <?php echo $_POST["height"] == "720" ? "selected" : ""; ?>>720p</option>
+              <option value="1080" <?php echo $_POST["height"] == "1080" ? "selected" : ""; ?>>1080p</option>
+              <option value="1440" <?php echo $_POST["height"] == "1440" ? "selected" : ""; ?>>1440p</option>
+              <option value="4096" <?php echo $_POST["height"] == "4096" ? "selected" : ""; ?>>4096p</option>
+            </select>
+          </div>
         <input type="submit">
       </form>
-    </div>
+    </center>
   </body>
 </html>
