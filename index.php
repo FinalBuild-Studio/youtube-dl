@@ -57,12 +57,9 @@ if ($method === "POST") {
 
       center > form {
         margin: 0 auto;
-        width: 60%;
       }
 
       center {
-        width: 50%;
-        left: 25%;
         position: relative;
       }
     </style>
@@ -72,7 +69,7 @@ if ($method === "POST") {
       <h1>youtube-dl web console</h1>
       <form method="post">
         <table>
-          <thead>
+          <tbody>
             <tr>
               <td>
                 <label><?php echo $config["url"]; ?></label>
@@ -139,7 +136,7 @@ if ($method === "POST") {
                 </select>
               </td>
             </tr>
-          </thead>
+          </tbody>
         </table>
         <input type="submit">
       </form>
