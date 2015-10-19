@@ -1,6 +1,6 @@
 <?php
 
-array(
+return array(
     "url"     => "Download URL",
     "storage" => "Storage",
     "proxy"   => "Proxy",
