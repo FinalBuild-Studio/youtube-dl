@@ -4,8 +4,7 @@ namespace Http;
 
 class Curl
 {
-
-    private   $ch    = null;
+    private $ch    = null;
     protected $proxy = null;
 
     protected function request($url = "")

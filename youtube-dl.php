@@ -4,17 +4,18 @@
 error_reporting(0);
 require_once dirname(__FILE__) . "/library/autoload.php";
 $accept = ["-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy", "-height", "-l", "-list"];
-if (count($argv) == 1) {
+if (count($argv) === 1) {
     echo "youtube-dl.php: missing operand.\r\n" .
          "Try `php youtube-dl.php -help' or `php youtube-dl.php -h' for more information.\r\n";
     exit();
 }
+
 $listYoutube = false;
 $concat      = false;
 $last        = "";
 foreach ($argv as $key => $value) {
     if ($key >= 1) {
-        if ($value == "-h" || $value == "-help") {
+        if ($value === "-h" || $value === "-help") {
             echo "Usage: php youtube-dl.php [OPTION]...\r\n" .
                  "youtube-dl php version by michael34435\r\n" .
                  "\r\n-i, -id\t\tSpecify youtube id" .
@@ -28,7 +29,7 @@ foreach ($argv as $key => $value) {
                  "\r\nPlease report bugs to (michael34435gmail.com).\r\n";
             exit();
         }
-        if ($value == "-l" || $value == "-list") {
+        if ($value === "-l" || $value === "-list") {
             $listYoutube = true;
         }
         if ($concat) {
@@ -43,6 +44,7 @@ foreach ($argv as $key => $value) {
         }
     }
 }
+
 $format = getenv("-format");
 $path   = getenv("-path");
 $id     = getenv("-id");
@@ -57,19 +59,23 @@ $format = empty($format) ? "mp4" : $format;
 if (empty($id)) {
     exit("No yt id specified.\r\n");
 }
+
 if (!$listYoutube && empty($path)) {
     exit("No save path specified.\r\n");
 }
+
 $loader = new Youtube\Loader();
 if (!empty($proxy)) {
     echo "Setting youtube proxy ...", PHP_EOL;
     $loader->setProxy($proxy);
 }
+
 $loader = $loader->visit($id);
 echo "Analyzing available media manifest ...", PHP_EOL;
 if (!($loader = $loader->getManifest())) {
     exit("Download failed, please add proxy setting or retry again.\r\n");
 }
+
 if ($listYoutube) {
     $loader->getReturnHeight();
 } else {
@@ -78,10 +84,12 @@ if ($listYoutube) {
         $loader->setHeight($height);
     }
 }
+
 echo "Analyzing media type ...", PHP_EOL;
 if (!($loader = $loader->getMedia($format))) {
     exit("Can not find proper media format. Please try `mp4' or `webm' instead.\r\n");
 }
+
 if (is_array($loader)) {
     echo "Available height:", PHP_EOL;
     foreach ($loader as $height) {

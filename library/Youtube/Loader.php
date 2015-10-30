@@ -4,7 +4,6 @@ namespace Youtube;
 
 class Loader extends \Http\Curl
 {
-
     const   BEST_METHOD      = 0;
     const   SPECIFIED_HEIGHT = 1;
     const   RETURN_HEIGHT    = 2;
@@ -96,11 +95,11 @@ class Loader extends \Http\Curl
         $max  = [];
         if (!empty($this->set)) {
             $this->mediaType = $this->getMediaType($mediaType);
-            foreach ($this->set as $setKey => $setValue) {
-                if ($setValue["name"] == "ADAPTATIONSET") {
+            foreach ($this->set as $setValue) {
+                if ($setValue["name"] === "ADAPTATIONSET") {
                     $type = "";
                     foreach ($setValue["attrs"] as $attrsKey => $attrsValue) {
-                        if ($attrsKey == "MIMETYPE") {
+                        if ($attrsKey === "MIMETYPE") {
                             $type = $attrsValue;
                             break;
                         }
@@ -115,7 +114,7 @@ class Loader extends \Http\Curl
                             foreach ($mediaSelectValue["attrs"] as $mediaSelectValueKey => $mediaSelectValueSubValue) {
                                 switch ($this->selectMethod) {
                                     case self::BEST_METHOD:
-                                        if ($mediaSelectValueKey == "BANDWIDTH") {
+                                        if ($mediaSelectValueKey === "BANDWIDTH") {
                                             if (intval($mediaSelectValueSubValue) > $max[$media]) {
                                                 $max[$media]          = intval($mediaSelectValueSubValue);
                                                 $this->source[$media] = $this->getTagData($mediaSelectValue);
@@ -124,12 +123,12 @@ class Loader extends \Http\Curl
 
                                         break;
                                     case self::SPECIFIED_HEIGHT:
-                                        if ($mediaSelectValueKey == "BANDWIDTH" && $media == "audio") {
+                                        if ($mediaSelectValueKey === "BANDWIDTH" && $media === "audio") {
                                             if (intval($mediaSelectValueSubValue) > $max[$media]) {
                                                 $max[$media]          = intval($mediaSelectValueSubValue);
                                                 $this->source[$media] = $this->getTagData($mediaSelectValue);
                                             }
-                                        } elseif ($mediaSelectValueKey == "HEIGHT" && $media == "video") {
+                                        } elseif ($mediaSelectValueKey === "HEIGHT" && $media === "video") {
                                             if (intval($this->selectHeight) >= intval($mediaSelectValueSubValue)
                                                 && intval($mediaSelectValueSubValue) > $max[$media]) {
                                                 $max[$media]          = intval($mediaSelectValueSubValue);
@@ -138,9 +137,8 @@ class Loader extends \Http\Curl
                                         }
 
                                         break;
-
                                     case self::RETURN_HEIGHT:
-                                        if ($media == "video" && $mediaSelectValueKey == "HEIGHT") {
+                                        if ($media === "video" && $mediaSelectValueKey === "HEIGHT") {
                                             $data[] = $mediaSelectValueSubValue;
                                         }
 
@@ -166,11 +164,11 @@ class Loader extends \Http\Curl
             $os        = substr(PHP_OS, 0, 3);
             $path      = "{$path}/{$os}/bin";
             $path      = realpath($path);
-            $path      = $os == "WIN" ? "set path=%path%;{$path};" : "export PATH=\"\$PATH:{$path}\"";
+            $path      = $os === "WIN" ? "set path=%path%;{$path};" : "export PATH=\"\$PATH:{$path}\"";
             $cache     = dirname(__FILE__) . "/../../cache";
             $cache     = realpath($cache);
             $location  = realpath($location);
-            $wfio      = ($os == "WIN" ? "wfio://" : "");
+            $wfio      = ($os === "WIN" ? "wfio://" : "");
 
             if (empty($save) && isset($this->source["audio"]) && isset($this->source["video"])) {
                 $audio = $cache . "/" . uniqid(null, true);
@@ -182,28 +180,28 @@ class Loader extends \Http\Curl
                 $audio     = realpath($audio);
                 $video     = realpath($video);
                 $tempfile  = uniqid(null, true) . "." . $this->mediaType;
-                $finalPath = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . $this->mediaType);
-                $tempDest  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $tempfile);
-                $tempPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $cache . "/" . $tempfile);
+                $finalPath = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR,  "{$location}/{$this->title}.{$this->mediaType}");
+                $tempDest  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR,  "{$location}/{$tempfile}");
+                $tempPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, "{$cache}/{$tempfile}");
 
                 // ffmpeg -i video.mp4 -i audio.wav \
                 // -c:v copy -c:a aac -strict experimental \
                 // -map 0:v:0 -map 1:a:0 output.mp4
                 $command   = "{$path} && ffmpeg -y -i \"{$video}\" -i \"{$audio}\" " .
                             "-c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 " .
-                            "\"{$tempPath}\" && ". ($os == "WIN" ? "MOVE /Y" : "mv -f") .
+                            "\"{$tempPath}\" && ". ($os === "WIN" ? "MOVE /Y" : "mv -f") .
                             " \"{$tempPath}\" \"{$location}\"";
             } elseif (isset($this->source[$save]) ||
                 (empty($save) && ((isset($this->source["video"]) && $save = "video") || (isset($this->source["audio"]) && $save = "audio")))) {
                 $tempfile   = $cache . "/" . uniqid(null, true);
                 $this->saveTo($this->source[$save], $tempfile);
-                $mediaType  = ($save == "video" ? $this->mediaType : "mp3");
+                $mediaType  = ($save === "video" ? $this->mediaType : "mp3");
                 $fakeFile   = uniqid(null, true) . "." . $mediaType;
-                $tempDest   = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $fakeFile);
-                $tempPath   = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $cache . "/" . $fakeFile);
-                $finalPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, $location . "/" . $this->title . "." . $mediaType);
+                $tempDest   = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, "{$location}/{$fakeFile}");
+                $tempPath   = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, "{$cache}/{$fakeFile}");
+                $finalPath  = preg_replace("/(\\\|\/)+/", DIRECTORY_SEPARATOR, "{$location}/{$this->title}.{$mediaType}");
                 $preCommand = "{$path} && ffmpeg -y -i \"{$tempfile}\" \"{$tempPath}\" && ";
-                $aftCommand = ($os == "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
+                $aftCommand = ($os === "WIN" ? "MOVE /Y" : "mv -f") . " \"{$tempPath}\" \"{$location}\"";
                 $command    = $preCommand . $aftCommand;
             } else {
                 exit("Please assign `audio' or `video'.\r\n");
@@ -246,7 +244,7 @@ class Loader extends \Http\Curl
                 return null;
             }
 
-            $sigA = ($act > 0) ? $this->swap($sigA, $act) : (($act == 0) ? array_reverse($sigA) : array_slice($sigA, -$act));
+            $sigA = ($act > 0) ? $this->swap($sigA, $act) : (($act === 0) ? array_reverse($sigA) : array_slice($sigA, -$act));
         }
 
         $result = join($sigA, '');
@@ -265,7 +263,7 @@ class Loader extends \Http\Curl
 
     private function decryptSignature($sig, $code)
     {
-        if ($sig == null) {
+        if ($sig === null) {
             return '';
         }
 
@@ -273,7 +271,9 @@ class Loader extends \Http\Curl
 
         if ($arr) {
             $sig2 = $this->decode($sig, $arr);
-            if ($sig2) return $sig2;
+            if ($sig2) {
+                return $sig2;
+            }
         }
 
         return $sig;
@@ -338,7 +338,7 @@ class Loader extends \Http\Curl
                     preg_match($regSwap, $piece, $swap);
                     $swap = isset($swap[1]) ? $swap[1] : null;
                     $swap = intval($swap, 10);
-                    if (preg_match("/^\-?\d+$/", $swap) && $swap > 0){
+                    if (preg_match("/^\-?\d+$/", $swap) && $swap > 0) {
                         $decodeArray[] = $swap;
                     }
                 }
@@ -351,7 +351,7 @@ class Loader extends \Http\Curl
     private function getTagData($mediaSelectValue)
     {
         foreach ($mediaSelectValue["children"] as $mediaSelectChildrenKey => $mediaSelectChildrenValue) {
-            if ($mediaSelectChildrenValue["name"] == "BASEURL") {
+            if ($mediaSelectChildrenValue["name"] === "BASEURL") {
                 return $mediaSelectChildrenValue["tagData"];
             }
         }
