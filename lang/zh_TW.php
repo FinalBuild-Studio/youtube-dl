@@ -9,4 +9,3 @@ return array(
     "size"    => "提取大小",
     "default" => "預設"
 );
-?>

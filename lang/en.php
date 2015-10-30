@@ -9,4 +9,3 @@ return array(
     "size"    => "Size",
     "default" => "Default"
 );
-?>

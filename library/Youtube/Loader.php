@@ -4,7 +4,6 @@ namespace Youtube;
 
 class Loader extends \Http\Curl
 {
-
     const   BEST_METHOD      = 0;
     const   SPECIFIED_HEIGHT = 1;
     const   RETURN_HEIGHT    = 2;
@@ -272,7 +271,9 @@ class Loader extends \Http\Curl
 
         if ($arr) {
             $sig2 = $this->decode($sig, $arr);
-            if ($sig2) return $sig2;
+            if ($sig2) {
+                return $sig2;
+            }
         }
 
         return $sig;
@@ -337,7 +338,7 @@ class Loader extends \Http\Curl
                     preg_match($regSwap, $piece, $swap);
                     $swap = isset($swap[1]) ? $swap[1] : null;
                     $swap = intval($swap, 10);
-                    if (preg_match("/^\-?\d+$/", $swap) && $swap > 0){
+                    if (preg_match("/^\-?\d+$/", $swap) && $swap > 0) {
                         $decodeArray[] = $swap;
                     }
                 }

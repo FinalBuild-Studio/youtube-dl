@@ -4,20 +4,18 @@ namespace XML;
 
 class xml2Array
 {
-
     private $arrOutput = [];
     private $resParser;
     private $strXmlData;
 
-    function parse($strInputXML)
+    public function parse($strInputXML)
     {
-
-        $this->resParser = xml_parser_create ();
-        xml_set_object($this->resParser,$this);
+        $this->resParser = xml_parser_create();
+        xml_set_object($this->resParser, $this);
         xml_set_element_handler($this->resParser, "tagOpen", "tagClosed");
 
         xml_set_character_data_handler($this->resParser, "tagData");
-        $this->strXmlData = xml_parse($this->resParser,$strInputXML );
+        $this->strXmlData = xml_parse($this->resParser, $strInputXML);
         if (!$this->strXmlData) {
             die(
                 sprintf(
@@ -33,16 +31,16 @@ class xml2Array
         return $this->arrOutput;
     }
 
-    function tagOpen($parser, $name, $attrs)
+    public function tagOpen($parser, $name, $attrs)
     {
         $tag = ["name" => $name, "attrs" => $attrs];
-        array_push($this->arrOutput,$tag);
+        array_push($this->arrOutput, $tag);
     }
 
-    function tagData($parser, $tagData)
+    public function tagData($parser, $tagData)
     {
-        if(trim($tagData)) {
-            if(isset($this->arrOutput[count($this->arrOutput)-1]['tagData'])) {
+        if (trim($tagData)) {
+            if (isset($this->arrOutput[count($this->arrOutput)-1]['tagData'])) {
                 $this->arrOutput[count($this->arrOutput) - 1]['tagData'] .= $tagData;
             } else {
                 $this->arrOutput[count($this->arrOutput) - 1]['tagData'] = $tagData;
@@ -50,7 +48,7 @@ class xml2Array
         }
     }
 
-    function tagClosed($parser, $name)
+    public function tagClosed($parser, $name)
     {
         $this->arrOutput[count($this->arrOutput) - 2]['children'][] = $this->arrOutput[count($this->arrOutput) - 1];
         array_pop($this->arrOutput);

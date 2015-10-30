@@ -111,10 +111,10 @@ if ($method === "POST") {
                 <label><?php echo $config["format"]; ?></label>
               </td>
               <td>
-                <select name="save">
+                <select name="format">
                   <option value=""><?php echo $config["format"]; ?></option>
-                  <option value="audio" <?php echo $_POST["format"] == "mp4" ? "selected" : ""; ?>>MP4</option>
-                  <option value="video" <?php echo $_POST["format"] == "webm" ? "selected" : ""; ?>>WEBM</option>
+                  <option value="mp4" <?php echo $_POST["format"] == "mp4" ? "selected" : ""; ?>>MP4</option>
+                  <option value="webm" <?php echo $_POST["format"] == "webm" ? "selected" : ""; ?>>WEBM</option>
                 </select>
               </td>
             </tr>
