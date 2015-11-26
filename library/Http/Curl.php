@@ -25,7 +25,7 @@ class Curl
         $this->release();
     }
 
-    private function execute(&$result = "")
+    private function execute(&$result)
     {
         $result = curl_exec($this->ch);
     }

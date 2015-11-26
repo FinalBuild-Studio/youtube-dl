@@ -191,8 +191,21 @@ class Loader extends \Http\Curl
                             "-c:v copy -c:a aac -strict experimental -map 0:v:0 -map 1:a:0 " .
                             "\"{$tempPath}\" && ". ($os === "WIN" ? "MOVE /Y" : "mv -f") .
                             " \"{$tempPath}\" \"{$location}\"";
-            } elseif (isset($this->source[$save]) ||
-                (empty($save) && ((isset($this->source["video"]) && $save = "video") || (isset($this->source["audio"]) && $save = "audio")))) {
+            } elseif (
+                isset($this->source[$save]) ||
+                (
+                    empty($save) &&
+                    (
+                        (
+                            isset($this->source["video"]) &&
+                            $save = "video"
+                        ) || (
+                            isset($this->source["audio"]) &&
+                            $save = "audio"
+                        )
+                    )
+                )
+            ) {
                 $tempfile   = $cache . "/" . uniqid(null, true);
                 $this->saveTo($this->source[$save], $tempfile);
                 $mediaType  = ($save === "video" ? $this->mediaType : "mp3");
@@ -327,7 +340,7 @@ class Loader extends \Http\Curl
                 } elseif ($check = strpos($piece, '[0]') && $check >= 0) { // inline swap
                     if ($key + 2 < count($codePieces) &&
                         ($check = strpos($codePieces[$key + 1], '.length') && $check >= 0) &&
-                        ($check = strpos($codePieces[$key + 1], '[0]') && $check >= 0)>= 0) {
+                        ($check = strpos($codePieces[$key + 1], '[0]') && $check >= 0) >= 0) {
                         preg_match($regInline, $codePieces[$key + 1], $inline);
                         $inline = isset($inline[1]) ? $inline[1] : null;
                         $inline = intval($inline, 10);
