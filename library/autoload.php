@@ -1,15 +1,15 @@
 <?php
 
-function loadFolder($folder = "")
+function loadFolder($folder)
 {
     if (empty($folder)) {
         $folder = dirname(__FILE__) . "/" . $folder;
     }
 
-    $data = glob($folder . "/*");
+    $data = glob("{$folder}/*");
     foreach ($data as $file) {
         $file = realpath($file);
-        $ext  = explode(".", $file);
+        $ext  = preg_match(".", $file);
         $ext  = end($ext);
         if (is_file($file) && $ext === "php" && $file !== __FILE__) {
             include_once $file;

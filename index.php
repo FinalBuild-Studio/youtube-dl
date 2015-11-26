@@ -11,8 +11,8 @@ if (!isset($config)) {
 
 if ($method === "POST") {
     set_time_limit(0);
-    $os      = substr(PHP_OS, 0, 3);
-    $urls    = explode(",", $_POST["url"]);
+    $os   = substr(PHP_OS, 0, 3);
+    $urls = explode(",", $_POST["url"]);
 
     foreach ($urls as $url) {
         if (preg_match("/^http(s|)\:/", $url)) {
