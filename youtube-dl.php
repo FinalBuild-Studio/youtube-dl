@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . "/library/autoload.php";
 $accept = ["-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy", "-height", "-l", "-list"];
 if (count($argv) === 1) {
     echo "youtube-dl.php: missing operand.\r\n" .
-         "Try `php youtube-dl.php -help' or `php youtube-dl.php -h' for more information.\r\n";
+         "Try `php youtube-dl.php --help' or `php youtube-dl.php -h' for more information.\r\n";
     exit();
 }
 
@@ -15,7 +15,7 @@ $concat      = false;
 $last        = "";
 foreach ($argv as $key => $value) {
     if ($key >= 1) {
-        if ($value === "-h" || $value === "-help") {
+        if ($value === "-h" || $value === "--help") {
             echo "Usage: php youtube-dl.php [OPTION]...\r\n" .
                  "youtube-dl php version by michael34435\r\n" .
                  "\r\n-i, -id\t\tSpecify youtube id" .

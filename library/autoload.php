@@ -9,7 +9,7 @@ function loadFolder($folder)
     $data = glob("{$folder}/*");
     foreach ($data as $file) {
         $file = realpath($file);
-        $ext  = preg_match(".", $file);
+        $ext  = explode(".", $file);
         $ext  = end($ext);
         if (is_file($file) && $ext === "php" && $file !== __FILE__) {
             include_once $file;
