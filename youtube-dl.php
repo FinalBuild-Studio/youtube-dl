@@ -15,21 +15,21 @@ $concat      = false;
 $last        = "";
 foreach ($argv as $key => $value) {
     if ($key >= 1) {
-        if ($value === "-h" || $value === "-help") {
+        if ($value === "-h" || $value === "--help") {
             echo "Usage: php youtube-dl.php [OPTION]...\r\n" .
                  "youtube-dl php version by michael34435\r\n" .
-                 "\r\n-i, -id\t\tSpecify youtube id" .
-                 "\r\n-f, -format\tSpecify youtube source format" .
-                 "\r\n-p, -path\tSave file to this location" .
-                 "\r\n-l, -list\tList this youtube video height." .
-                 "\r\n-s, -save\tOnly save specified format, two values `audio' or `video'. \r\n" .
+                 "\r\n-i, --id\t\tSpecify youtube id" .
+                 "\r\n-f, --format\tSpecify youtube source format" .
+                 "\r\n-p, --path\tSave file to this location" .
+                 "\r\n-l, --list\tList this youtube video height." .
+                 "\r\n-s, --save\tOnly save specified format, two values `audio' or `video'. \r\n" .
                  "\t\tSelect `audio' will save as mp3 file." .
-                 "\r\n-height\t\tSave file with specified height.(Please check with option -l)" .
-                 "\r\n-proxy\t\tAllow proxy\r\n" .
+                 "\r\n--height\t\tSave file with specified height.(Please check with option -l)" .
+                 "\r\n--proxy\t\tAllow proxy\r\n" .
                  "\r\nPlease report bugs to (michael34435gmail.com).\r\n";
             exit();
         }
-        if ($value === "-l" || $value === "-list") {
+        if ($value === "-l" || $value === "--list") {
             $listYoutube = true;
         }
         if ($concat) {
@@ -45,12 +45,12 @@ foreach ($argv as $key => $value) {
     }
 }
 
-$format = getenv("-format");
-$path   = getenv("-path");
-$id     = getenv("-id");
-$proxy  = getenv("-proxy");
-$save   = getenv("-save");
-$height = getenv("-height");
+$format = getenv("--format");
+$path   = getenv("--path");
+$id     = getenv("--id");
+$proxy  = getenv("--proxy");
+$save   = getenv("--save");
+$height = getenv("--height");
 $id     = empty($id) ? getenv("-i") : $id;
 $path   = empty($path) ? getenv("-p") : $path;
 $format = empty($format) ? getenv("-f") : $format;
