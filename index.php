@@ -23,8 +23,8 @@ if ($method === "POST") {
             $id = $url;
         }
 
-        $prefex  = $os === "WIN" ? "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php;%cd%\\php; && " : "";
-        $command = "{$prefex}php $(pwd)/youtube-dl.php " .
+        $prefex  = $os === "WIN" ? "SET PATH=%PATH%;C:\\xampp\\php;C:\\php;C:\\Program Files (x86)\\xampp\\php;%cd%\\php; && php %cd%" : "php $(pwd)";
+        $command = "{$prefex}/youtube-dl.php " .
                     "-i \"{$id}\" -f \"{$_POST["format"]}\" " .
                     "-p \"{$_POST["location"]}\" " .
                     "-s \"{$_POST["method"]}\" " .

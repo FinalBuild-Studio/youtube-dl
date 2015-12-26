@@ -31,7 +31,7 @@ for more information
 
 or
 
-	php youtube-dl.php -help
+	php youtube-dl.php --help
 
 ## For Windows / MacOSX Users
 ### Web console

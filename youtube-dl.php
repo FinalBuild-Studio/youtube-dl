@@ -6,7 +6,7 @@ require_once dirname(__FILE__) . "/library/autoload.php";
 $accept = ["-i", "-id", "-f", "-format", "-p", "-path", "-s", "-save", "-proxy", "-height", "-l", "-list"];
 if (count($argv) === 1) {
     echo "youtube-dl.php: missing operand.\r\n" .
-         "Try `php youtube-dl.php -help' or `php youtube-dl.php -h' for more information.\r\n";
+         "Try `php youtube-dl.php --help' or `php youtube-dl.php -h' for more information.\r\n";
     exit();
 }
 
