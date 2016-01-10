@@ -6,7 +6,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $config = ($langConfig = "lang/" . $lang . ".php") && file_exists($langConfig) ? include $langConfig : null;
 
 if (!isset($config)) {
-    exit();
+    $config = include "lang/en.php";
 }
 
 if ($method === "POST") {
@@ -32,12 +32,18 @@ if ($method === "POST") {
                     "-height \"{$_POST["size"]}\" && exit";
         $execute = "";
         if ($os === "WIN") {
-            $execute = "START \"\" \"{$command}\"";
+            $filename = "cache/" . uniqid(null, true) . ".bat";
+            file_put_contents($filename, $command);
+            $execute = "START \"\" ${filename}";
         } else {
             $execute = 'osascript -e "tell application \"Terminal\" to do script \"' . $command . '\""';
         }
 
         exec($execute);
+
+        if (isset($filename) && is_file($filename)) {
+            @unlink($filename);
+        }
     }
 }
 ?>
@@ -99,7 +105,7 @@ if ($method === "POST") {
                 <label><?php echo $config["method"]; ?></label>
               </td>
               <td>
-                <select name="save">
+                <select name="method">
                   <option value=""><?php echo $config["default"]; ?></option>
                   <option value="audio" <?php echo $_POST["method"] == "audio" ? "selected" : ""; ?>>Audio(mp3)</option>
                   <option value="video" <?php echo $_POST["method"] == "video" ? "selected" : ""; ?>>Video</option>
@@ -123,7 +129,7 @@ if ($method === "POST") {
                 <label><?php echo $config["size"]; ?></label>
               </td>
               <td>
-                <select name="height">
+                <select name="size">
                   <option value=""><?php echo $config["default"]; ?></option>
                   <option value="144" <?php echo $_POST["size"] == "144" ? "selected" : ""; ?>>144p</option>
                   <option value="240" <?php echo $_POST["size"] == "240" ? "selected" : ""; ?>>240p</option>
